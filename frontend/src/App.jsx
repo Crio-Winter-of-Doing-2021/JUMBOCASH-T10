@@ -3,9 +3,11 @@ import { Route, Switch } from "react-router-dom";
 import Form from "./components/Form/Form";
 import Home from "./components/Home/Home";
 import "./App.css";
+import { useSelector } from "react-redux";
 
 function App() {
-  console.log("hello");
+  const auth = useSelector((state) => state.auth);
+  console.log(auth);
   return (
     <>
       <NavBar />
