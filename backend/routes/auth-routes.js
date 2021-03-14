@@ -1,9 +1,29 @@
 const router = require("express").Router();
 const passport = require("passport");
 
-//Not needed
-router.get("/login",(req,res)=>{
-      res.render("login");
+router.post("/login",(req,res)=>{
+      const profile = req.body;
+
+      User.findOne({ 'id' : profile.id }).then((user) => {
+                  
+            // if the user is found, then log them in
+            if (user) {
+                  //This calls serializeUser
+                  done(null, user); // user found, return that user
+            } else {
+                  // if there is no user found with that google id, create them
+                  new User({
+                        id: profile.id,
+                        username: profile.name,
+                        thumbnail: profile.imageUrl,      
+                  // save the user to the database
+                  }).save().then((newUser)=>{
+                        console.log("New user created "+newUser);
+                        done(null,newUser);
+                  });
+            }
+      });
+      //res.render("login");
 });
 
 //auth logout
