@@ -8,8 +8,7 @@ router.post("/login",(req,res)=>{
                   
             // if the user is found, then log them in
             if (user) {
-                  //This calls serializeUser
-                  done(null, user); // user found, return that user
+                  res.status(200).json({id: user._id});
             } else {
                   // if there is no user found with that google id, create them
                   new User({
@@ -19,7 +18,7 @@ router.post("/login",(req,res)=>{
                   // save the user to the database
                   }).save().then((newUser)=>{
                         console.log("New user created "+newUser);
-                        done(null,newUser);
+                        res.status(201).json({id: newUser._id});
                   });
             }
       });
