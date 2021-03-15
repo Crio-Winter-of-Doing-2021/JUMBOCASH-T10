@@ -1,16 +1,17 @@
 {
   "name": "backend",
   "version": "1.0.0",
-<<<<<<< HEAD
   "description": "",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Rahul, Shaswata",
+  "author": "Shaswata Raha, Rahul Lekkala",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "cookie-session": "^1.4.0",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
@@ -18,20 +19,5 @@
     "passport": "^0.4.1",
     "passport-facebook": "^3.0.0",
     "passport-google-oauth20": "^2.0.0"
-=======
-  "description": "\"Backend for the cash flow management system\"",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Shaswata Raha/Rahul Lekkala",
-  "license": "ISC",
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "mongoose": "^5.11.18",
-    "nodemon": "^2.0.7"
->>>>>>> 36518204f77ad694cd06d2df461a183941f78898
   }
 }

@@ -1,7 +1,7 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const FacebookStrategy = require("passport-facebook").Strategy;
-const User = require("../models/user-model");
+const User = require("../models/User");
 
 //Set user's id as cookie in browser
 passport.serializeUser((user, done)=>{

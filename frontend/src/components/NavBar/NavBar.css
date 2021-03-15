@@ -1,0 +1,21 @@
+.navbar-template{
+    display:flex;
+    justify-content:space-between;
+    
+}
+
+.template{
+    display:flex;
+    flex-direction: row;
+    justify-content:space-between;
+    
+}
+
+.items{
+    margin:0px 2px;
+    padding:0px 5px;
+}
+
+.items:active{
+    color:red;
+}

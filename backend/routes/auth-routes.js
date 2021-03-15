@@ -1,9 +1,29 @@
 const router = require("express").Router();
 const passport = require("passport");
+const User = require("../models/User");
 
-//Not needed
-router.get("/login",(req,res)=>{
-      res.render("login");
+router.post("/login",(req,res)=>{
+      const profile = req.body;
+
+      User.findOne({ 'email' : profile.email }).then((user) => {
+                  
+            // if the user is found, then log them in
+            if (user) {
+                  res.status(200).json({id: user._id});
+            } else {
+                  // if there is no user found with that google id, create them
+                  new User({
+                        email: profile.email,
+                        username: profile.username,
+                        thumbnail: profile.imageUrl,      
+                  // save the user to the database
+                  }).save().then((newUser)=>{
+                        console.log("New user created "+newUser);
+                        res.status(201).json({id: newUser._id});
+                  });
+            }
+      });
+      //res.render("login");
 });
 
 //auth logout
