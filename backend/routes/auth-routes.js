@@ -1,10 +1,11 @@
 const router = require("express").Router();
 const passport = require("passport");
+const User = require("../models/User");
 
 router.post("/login",(req,res)=>{
       const profile = req.body;
 
-      User.findOne({ 'id' : profile.id }).then((user) => {
+      User.findOne({ 'email' : profile.email }).then((user) => {
                   
             // if the user is found, then log them in
             if (user) {
@@ -12,8 +13,8 @@ router.post("/login",(req,res)=>{
             } else {
                   // if there is no user found with that google id, create them
                   new User({
-                        id: profile.id,
-                        username: profile.name,
+                        email: profile.email,
+                        username: profile.username,
                         thumbnail: profile.imageUrl,      
                   // save the user to the database
                   }).save().then((newUser)=>{
