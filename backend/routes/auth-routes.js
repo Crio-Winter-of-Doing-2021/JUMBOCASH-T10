@@ -2,6 +2,16 @@ const router = require("express").Router();
 const passport = require("passport");
 const User = require("../models/User");
 
+
+/*
+Example curl request
+curl --location --request POST 'http://localhost:3000/auth/login' \
+--header 'Accept: application/json' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'email=rahu@gmail.com' \
+--data-urlencode 'username=Rahul' \
+--data-urlencode 'imageUrl=abcdef'
+*/
 router.post("/login",(req,res)=>{
       const profile = req.body;
 
@@ -25,6 +35,22 @@ router.post("/login",(req,res)=>{
       });
       //res.render("login");
 });
+
+
+/*
+Example Request
+curl --location --request GET 'http://localhost:3000/auth/user/604f058d8d'
+*/
+router.get("/user/:id", async (req,res)=>{
+
+      const user = await User.findOne({_id: req.params.id});
+
+      if(user){
+            res.status(200).json(user);
+      }else{
+            res.status(404).json({error:"User not Found"});
+      }
+})
 
 //auth logout
 router.get("/logout",(req,res)=>{
