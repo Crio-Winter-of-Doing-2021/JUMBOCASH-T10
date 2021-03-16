@@ -3,15 +3,15 @@ const User = require("../models/User");
 const Entity = require("../models/Entity");
 const Transaction = require("../models/Transaction");
 
-const authCheck = (req, res, next) => {
-      if(!req.user){
-          res.redirect('/auth/login');
-      } else {
-          next();
-      }
-  };
+// const authCheck = (req, res, next) => {
+//       if(!req.user){
+//           res.redirect('/auth/login');
+//       } else {
+//           next();
+//       }
+//   };
 
-router.get("/", authCheck, (req,res)=>{
+router.get("/", (req,res)=>{
       console.log(req);
       res.send("Welcome "+req.user.username);
 });

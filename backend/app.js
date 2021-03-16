@@ -40,9 +40,9 @@ app.use("/auth", authRoutes);
 app.use("/profile",profileRoutes);
 app.use("/", transactionRoutes);
 
-app.get("/user", (req,res)=>{
-      res.render("home");
-});
+// app.get("/user", (req,res)=>{
+//       res.render("home");
+// });
 
 app.listen(3000, ()=>{
       console.log("Server started on port 3000");
