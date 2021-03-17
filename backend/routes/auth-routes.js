@@ -41,9 +41,9 @@ router.post("/login",(req,res)=>{
 Example Request
 curl --location --request GET 'http://localhost:3000/auth/user/604f058d8d'
 */
-router.get("/user/:id", async (req,res)=>{
+router.get("/user", async (req,res)=>{
 
-      const user = await User.findOne({_id: req.params.id});
+      const user = await User.findOne({_id: req.query.id});
 
       if(user){
             res.status(200).json(user);
