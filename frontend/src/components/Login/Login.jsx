@@ -3,33 +3,65 @@ import "../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import FacebookIcon from "@material-ui/icons/Facebook";
 import { GoogleLogin } from "react-google-login";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import "./Form.css";
-
-const googleSuccess = async (res) => {
-  const result = res?.profileObj;
-  const token = res?.tokenId;
-  console.log(result);
-  console.log(token);
-  console.log(result.imageUrl);
-};
-
-const googleError = () => {
-  alert("Google Sign In was unsuccessful. Try again later");
-};
-
-const responseFacebook = (res) => {
-  console.log(res);
-
-  const token = res?.accessToken;
-
-  console.log(token);
-  console.log(res?.picture.data.url);
-};
+import * as axios from "axios";
+import { login } from "../../actions/index";
+import "./Login.css";
 
 const Form = () => {
-  let history = useHistory();
-  console.log(history);
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const googleSuccess = async (res) => {
+    const result = res?.profileObj;
+    // console.log(result);
+    // google success result
+
+    try {
+      const user = await axios.post("http://localhost:8000/auth/login", {
+        email: result.email,
+        username: result.name,
+        imageUrl: result.imageUrl,
+      });
+
+      console.log(user.data.id);
+      localStorage.setItem("logged_in_id", user.data.id);
+      dispatch(login(user.data.id));
+      history.push("/dashboard");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const googleError = () => {
+    alert("Google Sign In was unsuccessful. Try again later");
+  };
+
+  const responseFacebook = async (res) => {
+    // console.log(res);
+
+    // const token = res?.accessToken;
+
+    // console.log(token);
+    // console.log(res?.picture.data.url);
+
+    try {
+      const user = await axios.post("http://localhost:8000/auth/login", {
+        email: res.email,
+        username: res.name,
+        imageUrl: res?.picture.data.url,
+      });
+
+      console.log(user.data.id);
+      localStorage.setItem("logged_in_id", user.data.id);
+      dispatch(login(user.data.id));
+      history.push("/dashboard");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="sign-in-container">
       <div className="sign-in-template">
