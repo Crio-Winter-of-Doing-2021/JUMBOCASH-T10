@@ -1,4 +1,4 @@
-import { LOGIN } from "../actions/actionConstants";
+import { LOGIN, LOGOUT } from "../actions/actionConstants";
 
 const initialState = {
   user: {},
@@ -15,6 +15,8 @@ export default function auth(state = initialState, action) {
         id: action.id,
         isLoggedIn: true,
       };
+    case LOGOUT:
+      return initialState;
     default:
       return state;
   }

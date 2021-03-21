@@ -18,6 +18,7 @@
   justify-content: center;
   align-items: center;
   border-radius: 5px;
-  padding: 30px;
-  margin: 50px;
+  margin: 5em auto;
+  padding: 5em;
+  text-align: center;
 }

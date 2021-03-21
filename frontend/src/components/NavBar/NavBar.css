@@ -1,21 +1,23 @@
-.navbar-template{
-    display:flex;
-    justify-content:space-between;
-    
+.navbar {
+  width: 100vw;
 }
 
-.template{
-    display:flex;
-    flex-direction: row;
-    justify-content:space-between;
-    
+.navbar-template {
+  display: flex;
+  justify-content: space-between;
 }
 
-.items{
-    margin:0px 2px;
-    padding:0px 5px;
+.template {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-.items:active{
-    color:red;
+.items {
+  margin: 0px 2px;
+  padding: 0px 5px;
+}
+
+.items:active {
+  color: red;
 }

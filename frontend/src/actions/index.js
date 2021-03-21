@@ -1,5 +1,5 @@
 import * as api from "../api/index";
-import { LOGIN } from "./actionConstants";
+import { LOGIN, LOGOUT } from "./actionConstants";
 
 export const login = (id) => async (dispatch) => {
   try {
@@ -8,4 +8,8 @@ export const login = (id) => async (dispatch) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const logout = () => {
+  return { type: LOGOUT };
 };

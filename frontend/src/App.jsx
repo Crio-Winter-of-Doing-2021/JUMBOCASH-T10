@@ -2,7 +2,10 @@ import NavBar from "./components/NavBar/NavBar";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Login from "./components/Login/Login";
 import Home from "./components/Home/Home";
-import Dashboard from "./components/Dashboard/Dashboard";
+import DashboardTransaction from "./components/Dashboard/DashboardTransaction/DashboardTransaction";
+import DashboardHome from "./components/Dashboard/DashboardHome/DashboardHome";
+import DashboardReport from "./components/Dashboard/DashboardReport/DashboardReport";
+import DashboardEntity from "./components/Dashboard/DashboardEntity/DashboardEntity";
 import Logout from "./components/Logout/Logout";
 import "./App.css";
 import { useSelector } from "react-redux";
@@ -20,11 +23,20 @@ function App() {
         <Route exact path="/sign-in">
           {isLoggedIn ? <Redirect to="/logout" /> : <Login />}
         </Route>
-        <Route exact path="/dashboard">
-          {!isLoggedIn ? <Redirect to="/" /> : <Dashboard />}
+        <Route path="/dashboard/transaction">
+          {isLoggedIn ? <DashboardTransaction /> : <Redirect to="/" />}
+        </Route>
+        <Route path="/dashboard/entity">
+          {isLoggedIn ? <DashboardEntity /> : <Redirect to="/" />}
+        </Route>
+        <Route path="/dashboard/report">
+          {isLoggedIn ? <DashboardReport /> : <Redirect to="/" />}
+        </Route>
+        <Route path="/dashboard">
+          {isLoggedIn ? <DashboardHome /> : <Redirect to="/" />}
         </Route>
         <Route exact path="/logout">
-          {!isLoggedIn ? <Redirect to="/sign-in" /> : <Logout />}
+          {isLoggedIn ? <Logout /> : <Redirect to="/sign-in" />}
         </Route>
       </Switch>
     </>
