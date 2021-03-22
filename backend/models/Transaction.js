@@ -13,7 +13,8 @@ const transactionSchema = new Schema({
             ref: 'User'
       },
       paymentMode: String,
-      transactionTime: {type : Date, default : Date.now}
+      transactionTime: {type : Date, default : Date.now},
+      remarks: String
 });
 
 const Transaction = mongoose.model("Transaction",transactionSchema);
