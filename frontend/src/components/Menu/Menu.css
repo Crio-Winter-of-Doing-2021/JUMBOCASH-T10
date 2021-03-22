@@ -1,0 +1,12 @@
+.menu-button {
+  width: 100%;
+  height: auto;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow: auto;
+}
+
+.menu {
+  top: 20px;
+  position: sticky;
+}
