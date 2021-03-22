@@ -1,12 +1,12 @@
 import React from "react";
 import Menu from "../../Menu/Menu";
 import TransactionForm from "../../TransactionForm/TransactionForm";
-import "./DashboardTransaction.css";
+import "../Dashboard.css";
 
 function DashboardTransaction() {
   return (
     <>
-      <div className="grid-container">
+      <div className="grid-container1">
         <div className="menu-container">
           <Menu />
         </div>

@@ -4,8 +4,12 @@ import Menu from "../../Menu/Menu";
 function DashboardHome() {
   return (
     <>
-      <h1>hello</h1>
-      <Menu />
+      <div className="grid-container2">
+        <div className="menu-container">
+          <Menu />
+        </div>
+        <div className="dashboard-container">home</div>
+      </div>
     </>
   );
 }

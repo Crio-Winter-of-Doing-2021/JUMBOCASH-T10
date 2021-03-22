@@ -6,7 +6,7 @@ import "./Menu.css";
 function Menu() {
   return (
     <>
-      <div className="button-group-vertical">
+      <div className="button-group-vertical menu">
         <Link to="/dashboard">
           <button type="button" className="btn btn-dark menu-button">
             Home

@@ -11,61 +11,70 @@ import useStyles from "./styles";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const transaction_types = [
+const entity_types = [
   {
-    value: "Credit",
-    label: "Credit",
+    value: "Customer",
+    label: "Customer",
   },
-  { value: "Debit", label: "Debit" },
+  { value: "Vendor", label: "Vendor" },
 ];
 
-const transaction_modes = [
-  {
-    value: "Cash",
-    label: "Cash",
-  },
-  {
-    value: "UPI",
-    label: "UPI",
-  },
-  {
-    value: "Credit/Debit Card",
-    label: "Credit/Debit Card",
-  },
-];
-
-function TransactionForm() {
+function EntityForm() {
   const classes = useStyles();
 
-  let transaction = {
+  let entity = {
     entity_name: "",
-    amount: 0,
-    transaction_type: "",
-    transaction_mode: "",
-    transaction_remark: "",
+    phone_no: "",
+    entity_type: "",
+    adress: "",
   };
-  const [transactionObj, setTransactionObj] = useState(transaction);
+  const [entityObj, setEntityObj] = useState(entity);
 
   const handleChange = (e) => {
     let value = e.target.value;
     let name = e.target.name;
-    if (name === "amount" && value < 0) value = 0;
-    setTransactionObj({
-      ...transactionObj,
+
+    setEntityObj({
+      ...entityObj,
       [name]: value,
     });
   };
 
   const handleClear = () => {
-    setTransactionObj(transaction);
+    setEntityObj(entity);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const phone = entityObj.phone_no;
+    let err = false;
+
+    if (phone.length !== 10) err = true;
+
+    for (let ch in phone) {
+      if (!(ch >= "0" && ch <= "9")) err = true;
+    }
+
+    if (phone[0] === "0") err = true;
+
+    if (err === true) {
+      toast.error("Phone Number is Incorrect", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      });
+      return;
+    }
+
     console.log("submmitting form");
-    console.log(transactionObj);
+    console.log(entityObj);
     handleClear();
-    toast.success("Transaction Submiited Successfully", {
+    toast.success("Entity Created Successfully", {
       position: "top-center",
       autoClose: 3000,
       hideProgressBar: false,
@@ -78,76 +87,62 @@ function TransactionForm() {
 
   return (
     <>
-      <div className="transaction-form-container">
+      <div className="entity-form-container">
         <Paper className={classes.paper}>
           <form
             autoComplete="off"
             className={`${classes.root} ${classes.form}`}
             onSubmit={handleSubmit}
           >
-            <Typography variant="h6">Create Transaction</Typography>
+            <Typography variant="h6">Create Entity</Typography>
             <TextField
               name="entity_name"
               variant="outlined"
               label="Entity Name"
               fullWidth
               required
-              value={transactionObj.entity}
+              value={entityObj.entity_name}
               onChange={handleChange}
             />
             <TextField
-              name="amount"
+              name="phone_no"
               variant="outlined"
-              label="Amount(in Rs.)"
+              label="Phone Number"
               fullWidth
               required
-              type="number"
-              value={transactionObj.amount}
+              type="text"
+              value={entityObj.phone_no}
               onChange={handleChange}
             />
+
             <TextField
-              name="transaction_mode"
+              name="entity_type"
               variant="outlined"
-              label="Mode Of Payment"
+              label="Entity type"
               fullWidth
               required
               select
-              value={transactionObj.transaction_mode}
+              value={entityObj.entity_type}
               onChange={handleChange}
             >
-              {transaction_modes.map((option) => (
+              {entity_types.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
                   {option.label}
                 </MenuItem>
               ))}
             </TextField>
             <TextField
-              name="transaction_type"
+              name="adress"
               variant="outlined"
-              label="Transaction Yype"
-              fullWidth
-              required
-              select
-              value={transactionObj.transaction_type}
-              onChange={handleChange}
-            >
-              {transaction_types.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              name="transaction_remark"
-              variant="outlined"
-              label="What's this Transaction is for.."
+              label="Enter the adress of the Entity"
               fullWidth
               multiline
               rows={4}
-              value={transactionObj.transaction_remark}
+              value={entityObj.adress}
               onChange={handleChange}
               required
             />
+
             <Button
               className={classes.buttonSubmit}
               variant="contained"
@@ -175,4 +170,4 @@ function TransactionForm() {
   );
 }
 
-export default TransactionForm;
+export default EntityForm;

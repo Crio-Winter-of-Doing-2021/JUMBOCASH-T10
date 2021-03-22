@@ -1,10 +1,15 @@
 import React from "react";
 import Menu from "../../Menu/Menu";
+
 function DashboardReport() {
   return (
     <>
-      <h1>hello Report</h1>
-      <Menu />
+      <div className="grid-container2">
+        <div className="menu-container">
+          <Menu />
+        </div>
+        <div className="report-container">reports</div>
+      </div>
     </>
   );
 }

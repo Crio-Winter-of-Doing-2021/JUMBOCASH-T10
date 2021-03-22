@@ -32,7 +32,7 @@ function App() {
         <Route path="/dashboard/report">
           {isLoggedIn ? <DashboardReport /> : <Redirect to="/" />}
         </Route>
-        <Route path="/dashboard">
+        <Route exact path="/dashboard">
           {isLoggedIn ? <DashboardHome /> : <Redirect to="/" />}
         </Route>
         <Route exact path="/logout">
