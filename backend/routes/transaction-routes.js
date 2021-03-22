@@ -185,7 +185,9 @@ router.post("/transaction", async (req,res)=>{
             transactionType: transaction.transactionType,
             entity: transaction.entityId,
             amount: transaction.amount,
-            host: transaction.hostId
+            host: transaction.hostId,
+            paymentMode: transaction.paymentMode,
+            transactionTime: transaction.transactionTime
       });
 
       try{
@@ -194,6 +196,70 @@ router.post("/transaction", async (req,res)=>{
       }catch(error){
             res.status(404).json({message:error.message});
       }
+});
+
+
+/*
+Example: 
+curl --location --request PATCH 'http://localhost:8000/transaction/604c63d9cbb44151e8450908' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "paymentMode": "Debit Card",
+    "transactionTime": "2021-03-22"
+}'
+*/
+
+router.patch("/transaction/:id", async (req,res)=>{
+
+      const transactionId = req.params.id;
+
+      if(transactionId.match(/^[0-9a-fA-F]{24}$/))
+      {
+
+            const transaction = await Transaction.findOne({_id: transactionId})
+                                    .populate('entity')
+                                    .populate('host');
+
+            if(transaction)
+            {
+                  if(req.body.transactionType){
+                        transaction.transactionType = req.body.transactionType;
+                  }
+
+                  if(req.body.amount){
+                        transaction.amount = req.body.amount;
+                  }
+
+                  if(req.body.paymentMode){
+                        transaction.paymentMode = req.body.paymentMode;
+                  }
+
+                  if(req.body.transactionTime){
+                        transaction.transactionTime = req.body.transactionTime;
+                  }
+
+                  if(req.body.entityId){
+                        transaction.entity = req.body.entityId;
+                  }
+
+                  if(req.body.hostId){
+                        transaction.host = req.body.hostId;
+                  }
+
+                  try{
+                       await transaction.save();
+                        res.status(201).json({id:transaction._id});
+                  }catch(error){
+                        res.status(404).json({message:error.message});
+                  }
+            }else{
+                  res.status(400).json({InvalidID:"Transaction with the ID doesn't exist"});
+            }
+
+      }else{
+            res.status(404).json({invalid_id:"Transaction with ID not found, please provide a valid ID"}); 
+      }
+
 });
 
 module.exports = router;
