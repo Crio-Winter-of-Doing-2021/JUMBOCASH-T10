@@ -111,7 +111,9 @@ router.post("/entity", async (req,res)=>{
       const newEntity = new Entity({
             username: entity.username,
             userType: entity.userType,
-            host: entity.hostId
+            host: entity.hostId,
+            address: entity.address,
+            mobile: entity.mobile
       });
       
       try{
