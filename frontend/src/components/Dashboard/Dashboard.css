@@ -22,12 +22,12 @@
 
 .transaction-container {
   padding: 3em 0;
-  justify-self: center;
+  justify-self: stretch;
 }
 
 .entity-container {
   padding: 3em 0;
-  justify-self: center;
+  justify-self: stretch;
 }
 
 .report-container {

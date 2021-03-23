@@ -1,6 +1,7 @@
 import React from "react";
 import Menu from "../../Menu/Menu";
 import EntityForm from "../../EntityForm/EntityForm";
+import Entities from "../../Entities/Entities";
 import "../Dashboard.css";
 
 function DashboardEntity() {
@@ -10,7 +11,9 @@ function DashboardEntity() {
         <div className="menu-container">
           <Menu />
         </div>
-        <div className="entity-container">entities</div>
+        <div className="entity-container">
+          <Entities />
+        </div>
         <div className="form-container">
           <EntityForm />
         </div>

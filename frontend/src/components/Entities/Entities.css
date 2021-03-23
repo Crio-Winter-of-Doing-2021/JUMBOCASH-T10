@@ -1,0 +1,16 @@
+.buttons {
+  /* width: 100%; */
+  display: flex;
+  flex-flow: row;
+  margin: 5px;
+  padding: 2px;
+  justify-content: space-evenly;
+}
+
+.buttons1 {
+  display: flex;
+  justify-content: center;
+}
+.buttons2 {
+  flex-flow: column;
+}
