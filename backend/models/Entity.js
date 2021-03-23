@@ -7,7 +7,9 @@ const entitySchema = new Schema({
       host: { 
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
-      }
+      },
+      address: String,
+      mobile: String
 });
 
 const Entity = mongoose.model("Entity",entitySchema);
