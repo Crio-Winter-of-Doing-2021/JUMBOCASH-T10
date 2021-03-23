@@ -30,12 +30,32 @@ async function findEntities(entities, id) {
   return entityList;
 }
 
+// Of all the entites, returns an array of entites that belongs to the current user
+async function findEntityList(entities, id) {
+  let entityList = [];
+  for (let entity of entities)
+    try {
+      console.log(entity);
+      if (entity.host._id == id) {
+        const tempEntity = {
+          username: entity.username,
+          _id: entity._id,
+        };
+        entityList.push(tempEntity);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  return entityList;
+}
+
 //Example cURL request
 /*
 curl --location --request GET 'http://localhost:3000/entity/604a1ec3d7f2b33c341847bf'
 */
 
 //Get all entities of current user
+
 router.get("/entity/:id", async (req, res) => {
   /*
       - Find all entities
@@ -57,32 +77,6 @@ router.get("/entity/:id", async (req, res) => {
       console.log(err);
       res.status(404).json({ message: err.message });
     });
-
-  //console.log(req.params.id);
-
-  // Entity.find({})
-  //       .populate('host')
-  //       .exec( function(err, entities)
-  //       {
-  //             //Iterate through each entity, find if it belongs to current user
-  //             //If it belongs, add to the list
-  //             entities.forEach((entity)=>
-  //             {
-  //                   console.log(entity);
-  //                   console.log(entity.host._id);
-  //                   if(entity.host._id == req.params.id){
-  //                         console.log("Found");
-  //                         entityList.push(entity);
-  //                         console.log(entityList);
-  //                   }
-  //             });
-  //       });
-
-  // entityList.forEach((i)=>{
-  //       console.log(i);
-  // });
-
-  // console.log(entityList);
 });
 
 //Example CURL Request
@@ -134,6 +128,51 @@ async function findTransactions(transactions, id) {
     }
   return transactionList;
 }
+
+router.patch("/entity/:id", async (req, res) => {
+  const entityId = req.params.id;
+
+  if (entityId.match(/^[0-9a-fA-F]{24}$/)) {
+    const entity = await Entity.findOne({ _id: entityId }).populate("host");
+
+    if (entity) {
+      if (req.body.username) {
+        entity.username = req.body.username;
+      }
+
+      if (req.body.userType) {
+        entity.userType = req.body.userType;
+      }
+
+      if (req.body.address) {
+        entity.address = req.body.address;
+      }
+
+      if (req.body.mobile) {
+        entity.mobile = req.body.mobile;
+      }
+
+      if (req.body.hostId) {
+        entity.host = req.body.hostId;
+      }
+
+      try {
+        await entity.save();
+        res.status(201).json({ id: entity._id });
+      } catch (error) {
+        res.status(404).json({ message: error.message });
+      }
+    } else {
+      res.status(400).json({ InvalidID: "entity with the ID doesn't exist" });
+    }
+  } else {
+    res
+      .status(404)
+      .json({
+        invalid_id: "entity with ID not found, please provide a valid ID",
+      });
+  }
+});
 
 //Example cURL request
 /*
