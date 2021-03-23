@@ -10,7 +10,7 @@ export default function entity(state = initialState, action) {
   switch (action.type) {
     case LOGIN:
       return {
-        ...state,
+        entity: action.entity,
         id: action.id,
         isLoggedIn: true,
       };

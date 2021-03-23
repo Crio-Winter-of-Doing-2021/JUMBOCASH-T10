@@ -11,6 +11,10 @@
   display: flex;
   justify-content: center;
 }
+
 .buttons2 {
+  display: flex;
   flex-flow: column;
+  align-items: center;
+  padding: 5px;
 }

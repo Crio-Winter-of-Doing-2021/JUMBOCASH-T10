@@ -17,3 +17,6 @@ export const post_entity = (entityObj, id) =>
     address: entityObj.address,
     mobile: entityObj.phone_no,
   });
+
+export const get_entities = (id) =>
+  axios.get(`http://localhost:8000/entity/${id}`);
