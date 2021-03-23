@@ -11,7 +11,10 @@ const transactionSchema = new Schema({
       host: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
-      }
+      },
+      paymentMode: String,
+      transactionTime: {type : Date, default : Date.now},
+      remarks: String
 });
 
 const Transaction = mongoose.model("Transaction",transactionSchema);
