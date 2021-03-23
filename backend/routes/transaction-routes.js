@@ -11,25 +11,23 @@ const Transaction = require("../models/Transaction");
 //       }
 //   };
 
-router.get("/", (req,res)=>{
-      console.log(req);
-      res.send("Welcome "+req.user.username);
+router.get("/", (req, res) => {
+  console.log(req);
+  res.send("Welcome " + req.user.username);
 });
 
 // Of all the entites, returns an array of entites that belongs to the current user
-async function findEntities(entities, id){
-
-      let entityList = [];
-      for(let entity of entities)
-      try{
-            console.log(entity);
-            if(entity.host._id == id)
-                  entityList.push(entity);
-                  console.log(entityList);
-      }catch(e){
-            console.log(e);
-      }
-      return entityList;
+async function findEntities(entities, id) {
+  let entityList = [];
+  for (let entity of entities)
+    try {
+      console.log(entity);
+      if (entity.host._id == id) entityList.push(entity);
+      console.log(entityList);
+    } catch (e) {
+      console.log(e);
+    }
+  return entityList;
 }
 
 //Example cURL request
@@ -38,56 +36,54 @@ curl --location --request GET 'http://localhost:3000/entity/604a1ec3d7f2b33c3418
 */
 
 //Get all entities of current user
-router.get("/entity/:id", async (req,res)=>{
-
-      /*
+router.get("/entity/:id", async (req, res) => {
+  /*
       - Find all entities
       - If the entity host is current user, add it to the list
       - Return the list
        */
 
-      //let entityList = [];
+  //let entityList = [];
 
-      const entities = await Entity.find()
-           .populate('host');
+  const entities = await Entity.find().populate("host");
 
-      //console.log(entities);
+  //console.log(entities);
 
-      findEntities(entities, req.params.id).then(foundList => {
-            res.status(200).json(foundList);
-      }).catch(err => {
-            console.log(err);
-            res.status(404).json({message:err.message});
-      });
+  findEntities(entities, req.params.id)
+    .then((foundList) => {
+      res.status(200).json(foundList);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(404).json({ message: err.message });
+    });
 
-      //console.log(req.params.id);
+  //console.log(req.params.id);
 
-      // Entity.find({})
-      //       .populate('host')
-      //       .exec( function(err, entities)
-      //       {
-      //             //Iterate through each entity, find if it belongs to current user
-      //             //If it belongs, add to the list
-      //             entities.forEach((entity)=>
-      //             {
-      //                   console.log(entity);
-      //                   console.log(entity.host._id);
-      //                   if(entity.host._id == req.params.id){
-      //                         console.log("Found");
-      //                         entityList.push(entity);
-      //                         console.log(entityList);
-      //                   }
-      //             });
-      //       });
+  // Entity.find({})
+  //       .populate('host')
+  //       .exec( function(err, entities)
+  //       {
+  //             //Iterate through each entity, find if it belongs to current user
+  //             //If it belongs, add to the list
+  //             entities.forEach((entity)=>
+  //             {
+  //                   console.log(entity);
+  //                   console.log(entity.host._id);
+  //                   if(entity.host._id == req.params.id){
+  //                         console.log("Found");
+  //                         entityList.push(entity);
+  //                         console.log(entityList);
+  //                   }
+  //             });
+  //       });
 
-      // entityList.forEach((i)=>{
-      //       console.log(i);
-      // });
+  // entityList.forEach((i)=>{
+  //       console.log(i);
+  // });
 
-      // console.log(entityList);
-
+  // console.log(entityList);
 });
-
 
 //Example CURL Request
 /*
@@ -101,71 +97,69 @@ curl --location --request POST 'http://localhost:3000/entity' \
 */
 
 //Post an entity for the current user
-router.post("/entity", async (req,res)=>{
+router.post("/entity", async (req, res) => {
+  //Form the entity object from the request
+  const entity = req.body;
 
-      //Form the entity object from the request
-      const entity = req.body;
+  console.log(entity);
 
-      console.log(entity);
+  const newEntity = new Entity({
+    username: entity.username,
+    userType: entity.userType,
+    host: entity.hostId,
+    address: entity.address,
+    mobile: entity.mobile,
+  });
 
-      const newEntity = new Entity({
-            username: entity.username,
-            userType: entity.userType,
-            host: entity.hostId,
-            address: entity.address,
-            mobile: entity.mobile
-      });
-      
-      try{
-            await newEntity.save();
-            res.status(201).json({id:newEntity._id});
-      }catch(error){
-            res.status(404).json({message:error.message});
-      }
+  try {
+    await newEntity.save();
+    console.log(newEntity);
+    res.status(201).json(newEntity);
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ message: error.message });
+  }
 });
 
 //Of all the transactions, select the transactions of current user and push it to an array
-async function findTransactions(transactions, id){
-
-      let transactionList = [];
-      for(let transaction of transactions)
-      try{
-            console.log(transaction);
-            if(transaction.host._id == id)
-                  transactionList.push(transaction);
-                  console.log(transactionList);
-      }catch(e){
-            console.log(e);
-      }
-      return transactionList;
+async function findTransactions(transactions, id) {
+  let transactionList = [];
+  for (let transaction of transactions)
+    try {
+      console.log(transaction);
+      if (transaction.host._id == id) transactionList.push(transaction);
+      console.log(transactionList);
+    } catch (e) {
+      console.log(e);
+    }
+  return transactionList;
 }
-
 
 //Example cURL request
 /*
 curl --location --request GET 'http://localhost:3000/transaction/604a1ec3d7f2b33c341847bf'
 */
 //Get all transactions of current user
-router.get("/transaction/:id", async (req,res)=>{
-
-      /*
+router.get("/transaction/:id", async (req, res) => {
+  /*
             - Find all transactions
             - Of all transactions, filter the current user transactions
             - Push it to an array
             - Send it as a JSON 
       */
 
-      const transactions = await Transaction.find()
-                              .populate('entity')
-                              .populate('host');
+  const transactions = await Transaction.find()
+    .populate("entity")
+    .populate("host");
 
-      findTransactions(transactions, req.params.id).then(foundList => {
-            res.status(200).json(foundList);
-      }).catch(err => {
-            console.log(err);
-            res.status(404).json({message:err.message});
-      });
-
+  findTransactions(transactions, req.params.id)
+    .then((foundList) => {
+      res.status(200).json(foundList);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(404).json({ message: err.message });
+    });
 });
 
 //Example cURL request
@@ -179,27 +173,25 @@ curl --location --request POST 'http://localhost:3000/transaction' \
     "amount": 15000
 }'
 */
-router.post("/transaction", async (req,res)=>{
-      
-      const transaction = req.body;
+router.post("/transaction", async (req, res) => {
+  const transaction = req.body;
 
-      const newTransaction = new Transaction({
-            transactionType: transaction.transactionType,
-            entity: transaction.entityId,
-            amount: transaction.amount,
-            host: transaction.hostId,
-            paymentMode: transaction.paymentMode,
-            transactionTime: transaction.transactionTime
-      });
+  const newTransaction = new Transaction({
+    transactionType: transaction.transactionType,
+    entity: transaction.entityId,
+    amount: transaction.amount,
+    host: transaction.hostId,
+    paymentMode: transaction.paymentMode,
+    transactionTime: transaction.transactionTime,
+  });
 
-      try{
-            await newTransaction.save();
-            res.status(201).json({id:newTransaction._id});
-      }catch(error){
-            res.status(404).json({message:error.message});
-      }
+  try {
+    await newTransaction.save();
+    res.status(201).json({ id: newTransaction._id });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
 });
-
 
 /*
 Example: 
@@ -211,57 +203,55 @@ curl --location --request PATCH 'http://localhost:8000/transaction/604c63d9cbb44
 }'
 */
 
-router.patch("/transaction/:id", async (req,res)=>{
+router.patch("/transaction/:id", async (req, res) => {
+  const transactionId = req.params.id;
 
-      const transactionId = req.params.id;
+  if (transactionId.match(/^[0-9a-fA-F]{24}$/)) {
+    const transaction = await Transaction.findOne({ _id: transactionId })
+      .populate("entity")
+      .populate("host");
 
-      if(transactionId.match(/^[0-9a-fA-F]{24}$/))
-      {
-
-            const transaction = await Transaction.findOne({_id: transactionId})
-                                    .populate('entity')
-                                    .populate('host');
-
-            if(transaction)
-            {
-                  if(req.body.transactionType){
-                        transaction.transactionType = req.body.transactionType;
-                  }
-
-                  if(req.body.amount){
-                        transaction.amount = req.body.amount;
-                  }
-
-                  if(req.body.paymentMode){
-                        transaction.paymentMode = req.body.paymentMode;
-                  }
-
-                  if(req.body.transactionTime){
-                        transaction.transactionTime = req.body.transactionTime;
-                  }
-
-                  if(req.body.entityId){
-                        transaction.entity = req.body.entityId;
-                  }
-
-                  if(req.body.hostId){
-                        transaction.host = req.body.hostId;
-                  }
-
-                  try{
-                       await transaction.save();
-                        res.status(201).json({id:transaction._id});
-                  }catch(error){
-                        res.status(404).json({message:error.message});
-                  }
-            }else{
-                  res.status(400).json({InvalidID:"Transaction with the ID doesn't exist"});
-            }
-
-      }else{
-            res.status(404).json({invalid_id:"Transaction with ID not found, please provide a valid ID"}); 
+    if (transaction) {
+      if (req.body.transactionType) {
+        transaction.transactionType = req.body.transactionType;
       }
 
+      if (req.body.amount) {
+        transaction.amount = req.body.amount;
+      }
+
+      if (req.body.paymentMode) {
+        transaction.paymentMode = req.body.paymentMode;
+      }
+
+      if (req.body.transactionTime) {
+        transaction.transactionTime = req.body.transactionTime;
+      }
+
+      if (req.body.entityId) {
+        transaction.entity = req.body.entityId;
+      }
+
+      if (req.body.hostId) {
+        transaction.host = req.body.hostId;
+      }
+
+      try {
+        await transaction.save();
+        res.status(201).json({ id: transaction._id });
+      } catch (error) {
+        res.status(404).json({ message: error.message });
+      }
+    } else {
+      res
+        .status(400)
+        .json({ InvalidID: "Transaction with the ID doesn't exist" });
+    }
+  } else {
+    res.status(404).json({
+      invalid_id: "Transaction with ID not found, please provide a valid ID",
+    });
+  }
 });
 
 module.exports = router;

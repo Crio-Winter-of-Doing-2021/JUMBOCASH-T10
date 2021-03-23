@@ -8,3 +8,12 @@ export const login = (id) =>
       id,
     },
   });
+
+export const post_entity = (entityObj, id) =>
+  axios.post("http://localhost:8000/entity", {
+    username: entityObj.entity_name,
+    userType: entityObj.entity_type,
+    hostId: id,
+    address: entityObj.address,
+    mobile: entityObj.phone_no,
+  });

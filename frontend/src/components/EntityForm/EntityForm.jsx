@@ -10,6 +10,8 @@ import { useState } from "react";
 import useStyles from "./styles";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { post_entity } from "../../actions/index.js";
+import { useDispatch } from "react-redux";
 
 const entity_types = [
   {
@@ -21,12 +23,13 @@ const entity_types = [
 
 function EntityForm() {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   let entity = {
     entity_name: "",
     phone_no: "",
     entity_type: "",
-    adress: "",
+    address: "",
   };
   const [entityObj, setEntityObj] = useState(entity);
 
@@ -70,19 +73,24 @@ function EntityForm() {
       });
       return;
     }
+    try {
+      console.log("submmitting form");
+      console.log(entityObj);
+      dispatch(post_entity(entityObj));
 
-    console.log("submmitting form");
-    console.log(entityObj);
-    handleClear();
-    toast.success("Entity Created Successfully", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-    });
+      handleClear();
+      toast.success("Entity Created Successfully", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -132,13 +140,13 @@ function EntityForm() {
               ))}
             </TextField>
             <TextField
-              name="adress"
+              name="address"
               variant="outlined"
               label="Enter the adress of the Entity"
               fullWidth
               multiline
               rows={4}
-              value={entityObj.adress}
+              value={entityObj.address}
               onChange={handleChange}
               required
             />
