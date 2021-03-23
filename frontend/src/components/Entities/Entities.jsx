@@ -5,7 +5,7 @@ import "./Entities.css";
 import Entity from "../Entity/Entity";
 import { useSelector } from "react-redux";
 
-function Entities() {
+function Entities({ setCurrentId }) {
   const entities = useSelector((state) => state.entity.entity);
   console.log(entities);
   const [show, setShow] = useState(false);
@@ -63,7 +63,11 @@ function Entities() {
           </div>
           <div className="buttons2">
             {entities.map((entity) => (
-              <Entity key={entity._id} entity={entity} />
+              <Entity
+                key={entity._id}
+                entity={entity}
+                setCurrentId={setCurrentId}
+              />
             ))}
           </div>
           <div className="buttons1">

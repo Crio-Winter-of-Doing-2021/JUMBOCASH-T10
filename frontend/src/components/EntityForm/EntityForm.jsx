@@ -10,8 +10,9 @@ import { useState } from "react";
 import useStyles from "./styles";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { post_entity } from "../../actions/index.js";
-import { useDispatch } from "react-redux";
+import { post_entity, update_entity } from "../../actions/index.js";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const entity_types = [
   {
@@ -21,9 +22,12 @@ const entity_types = [
   { value: "Vendor", label: "Vendor" },
 ];
 
-function EntityForm() {
+function EntityForm({ currentId, setCurrentId }) {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const currentEntity = useSelector((state) =>
+    currentId ? state.entity.entity.find((e) => e._id === currentId) : null
+  );
 
   let entity = {
     entity_name: "",
@@ -32,6 +36,16 @@ function EntityForm() {
     address: "",
   };
   const [entityObj, setEntityObj] = useState(entity);
+
+  useEffect(() => {
+    if (currentEntity)
+      setEntityObj({
+        entity_name: currentEntity.username,
+        phone_no: currentEntity.mobile,
+        entity_type: currentEntity.userType,
+        address: currentEntity.address,
+      });
+  }, [currentEntity]);
 
   const handleChange = (e) => {
     let value = e.target.value;
@@ -44,6 +58,7 @@ function EntityForm() {
   };
 
   const handleClear = () => {
+    setCurrentId(null);
     setEntityObj(entity);
   };
 
@@ -52,15 +67,11 @@ function EntityForm() {
 
     const phone = entityObj.phone_no;
     let err = false;
-
     if (phone.length !== 10) err = true;
-
     for (let ch in phone) {
       if (!(ch >= "0" && ch <= "9")) err = true;
     }
-
     if (phone[0] === "0") err = true;
-
     if (err === true) {
       toast.error("Phone Number is Incorrect", {
         position: "top-center",
@@ -73,12 +84,35 @@ function EntityForm() {
       });
       return;
     }
+
+    if (currentId) {
+      try {
+        console.log("updating form");
+        console.log(entityObj);
+        dispatch(update_entity(currentId, entityObj));
+        handleClear();
+
+        toast.success("Entity Updated Successfully", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+      return;
+    }
+
     try {
       console.log("submmitting form");
       console.log(entityObj);
       dispatch(post_entity(entityObj));
-
       handleClear();
+
       toast.success("Entity Created Successfully", {
         position: "top-center",
         autoClose: 3000,
@@ -88,8 +122,8 @@ function EntityForm() {
         draggable: true,
         progress: undefined,
       });
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -102,7 +136,9 @@ function EntityForm() {
             className={`${classes.root} ${classes.form}`}
             onSubmit={handleSubmit}
           >
-            <Typography variant="h6">Create Entity</Typography>
+            <Typography variant="h6">
+              {currentId ? `Edit` : `Create`} Entity
+            </Typography>
             <TextField
               name="entity_name"
               variant="outlined"

@@ -12,10 +12,13 @@ import useStyles from "./styles";
 
 function Entity(props) {
   const classes = useStyles();
-  const { key, entity } = props;
+  console.log(props);
+  const { entity, setCurrentId } = props;
 
   const scrollToTop = () => {
     console.log("hello");
+    setCurrentId(entity._id);
+    console.log(entity._id);
     window.scrollTo({
       top: 0,
       behavior: "smooth",

@@ -20,3 +20,12 @@ export const post_entity = (entityObj, id) =>
 
 export const get_entities = (id) =>
   axios.get(`http://localhost:8000/entity/${id}`);
+
+export const update_entity = (currentId, entityObj, id) =>
+  axios.patch(`http://localhost:8000/entity/${currentId}`, {
+    username: entityObj.entity_name,
+    userType: entityObj.entity_type,
+    hostId: id,
+    address: entityObj.address,
+    mobile: entityObj.phone_no,
+  });

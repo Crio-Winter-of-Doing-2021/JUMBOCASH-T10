@@ -3,8 +3,11 @@ import Menu from "../../Menu/Menu";
 import EntityForm from "../../EntityForm/EntityForm";
 import Entities from "../../Entities/Entities";
 import "../Dashboard.css";
+import { useState } from "react";
 
 function DashboardEntity() {
+  const [currentId, setCurrentId] = useState(null);
+
   return (
     <>
       <div className="grid-container1">
@@ -12,10 +15,10 @@ function DashboardEntity() {
           <Menu />
         </div>
         <div className="entity-container">
-          <Entities />
+          <Entities setCurrentId={setCurrentId} />
         </div>
         <div className="form-container">
-          <EntityForm />
+          <EntityForm currentId={currentId} setCurrentId={setCurrentId} />
         </div>
       </div>
     </>
