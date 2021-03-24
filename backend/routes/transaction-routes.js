@@ -47,6 +47,29 @@ async function getAllEntities(entities) {
   return entityList;
 }
 
+router.get("/entityList/:id", async (req, res) => {
+  /*
+      - Find all entities
+      - If the entity host is current user, add it to the list
+      - Return the list
+       */
+
+  //let entityList = [];
+
+  const entities = await Entity.find().populate("host");
+  const id = req.params.id;
+  //console.log(entities);
+
+  findEntityList(entities, id)
+    .then((foundList) => {
+      res.status(200).json(foundList);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(404).json({ message: err.message });
+    });
+});
+
 //Example cURL request
 /*
 curl --location --request GET 'http://localhost:3000/entity/604a1ec3d7f2b33c341847bf'
@@ -187,11 +210,9 @@ router.patch("/entity/:id", async (req, res) => {
       res.status(400).json({ InvalidID: "entity with the ID doesn't exist" });
     }
   } else {
-    res
-      .status(404)
-      .json({
-        invalid_id: "entity with ID not found, please provide a valid ID",
-      });
+    res.status(404).json({
+      invalid_id: "entity with ID not found, please provide a valid ID",
+    });
   }
 });
 
