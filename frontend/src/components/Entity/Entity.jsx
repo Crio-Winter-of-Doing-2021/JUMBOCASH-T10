@@ -9,6 +9,7 @@ import {
 import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import useStyles from "./styles";
+import card_background from "./card_background.png";
 
 function Entity(props) {
   const classes = useStyles();
@@ -29,7 +30,15 @@ function Entity(props) {
     <>
       <Card
         className={classes.root}
-        style={{ width: "100%", padding: "1em", margin: "1em" }}
+        style={{
+          width: "100%",
+          padding: "1em",
+          margin: "1em",
+          backgroundImage: `url(${card_background})`,
+          backgroundSize: "contain",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "right top",
+        }}
       >
         <CardHeader
           avatar={
