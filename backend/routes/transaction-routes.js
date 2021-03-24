@@ -30,17 +30,49 @@ async function findEntities(entities, id) {
   return entityList;
 }
 
+async function findEntities(entities, id) {
+  let entityList = [];
+  for (let entity of entities)
+    try {
+      console.log(entity);
+      if (entity.host._id == id) entityList.push(entity);
+      console.log(entityList);
+    } catch (e) {
+      console.log(e);
+    }
+  return entityList;
+}
+
+// Of all the entites, returns an array of entites that belongs to the current user
+async function findEntityList(entities, id) {
+  let entityList = [];
+  for (let entity of entities)
+    try {
+      console.log(entity);
+      if (entity.host._id == id) {
+        const tempEntity = {
+          username: entity.username,
+          _id: entity._id,
+        };
+        entityList.push(tempEntity);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  return entityList;
+}
+
 // Of all the entites, returns an array of entites that belongs to the current user
 async function getAllEntities(entities) {
   let entityList = [];
   for (let entity of entities)
     try {
       console.log(entity);
-        const tempEntity = {
-          username: entity.username,
-          _id: entity._id,
-        };
-        entityList.push(tempEntity);
+      const tempEntity = {
+        username: entity.username,
+        _id: entity._id,
+      };
+      entityList.push(tempEntity);
     } catch (e) {
       console.log(e);
     }
@@ -151,27 +183,27 @@ async function findTransactions(transactions, id) {
 }
 
 router.get("/entity", async (req, res) => {
-      /*
+  /*
           - Find all entities
           - If the entity host is current user, add it to the list
           - Return the list
            */
-    
-      //let entityList = [];
-    
-      const entities = await Entity.find().populate("host");
-    
-      //console.log(entities);
-    
-      getAllEntities(entities)
-        .then((foundList) => {
-          res.status(200).json(foundList);
-        })
-        .catch((err) => {
-          console.log(err);
-          res.status(404).json({ message: err.message });
-        });
+
+  //let entityList = [];
+
+  const entities = await Entity.find().populate("host");
+
+  //console.log(entities);
+
+  getAllEntities(entities)
+    .then((foundList) => {
+      res.status(200).json(foundList);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(404).json({ message: err.message });
     });
+});
 
 router.patch("/entity/:id", async (req, res) => {
   const entityId = req.params.id;
@@ -264,7 +296,7 @@ router.post("/transaction", async (req, res) => {
     host: transaction.hostId,
     paymentMode: transaction.paymentMode,
     transactionTime: transaction.transactionTime,
-    remarks:transaction.remarks
+    remarks: transaction.remarks,
   });
 
   try {
