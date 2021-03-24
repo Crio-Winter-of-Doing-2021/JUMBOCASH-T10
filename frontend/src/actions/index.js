@@ -1,11 +1,24 @@
 import * as api from "../api/index";
-import { LOGIN, LOGOUT, POST_ENTITY, UPDATE_ENTITY } from "./actionConstants";
+import {
+  LOGIN,
+  LOGOUT,
+  POST_ENTITY,
+  UPDATE_ENTITY,
+  POST_TRANSACTION,
+} from "./actionConstants";
 
 export const login = (id) => async (dispatch) => {
   try {
     const user = await api.login(id);
     const entity = await api.get_entities(id);
-    dispatch({ type: LOGIN, user: user.data, entity: entity.data, id });
+    const transaction = await api.get_transactions(id);
+    dispatch({
+      type: LOGIN,
+      user: user.data,
+      entity: entity.data,
+      transaction: transaction.data,
+      id,
+    });
   } catch (error) {
     console.log(error);
   }
@@ -34,6 +47,17 @@ export const update_entity = (currentId, entityObj) => async (dispatch) => {
     console.log(entityObj);
     dispatch({ type: UPDATE_ENTITY, currentId, entityObj });
     console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const post_transaction = (transactionObj) => async (dispatch) => {
+  try {
+    const id = localStorage.logged_in_id;
+    const { data } = await api.post_transaction(transactionObj, id);
+    console.log(data);
+    dispatch({ type: POST_TRANSACTION, transaction: data });
   } catch (error) {
     console.log(error);
   }

@@ -288,6 +288,7 @@ curl --location --request POST 'http://localhost:3000/transaction' \
 */
 router.post("/transaction", async (req, res) => {
   const transaction = req.body;
+  console.log(transaction);
 
   const newTransaction = new Transaction({
     transactionType: transaction.transactionType,
@@ -301,7 +302,8 @@ router.post("/transaction", async (req, res) => {
 
   try {
     await newTransaction.save();
-    res.status(201).json({ id: newTransaction._id });
+    console.log(newTransaction);
+    res.status(201).json(newTransaction);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }

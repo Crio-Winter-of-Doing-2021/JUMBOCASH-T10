@@ -6,10 +6,13 @@ import {
   Paper,
   MenuItem,
 } from "@material-ui/core";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useStyles from "./styles";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { get_entityList } from "../../api/index.js";
+import { post_transaction } from "../../actions/index.js";
+import { useDispatch } from "react-redux";
 
 const transaction_types = [
   {
@@ -36,9 +39,21 @@ const transaction_modes = [
 
 function TransactionForm() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
+  const [entityList, setentityList] = useState([]);
+
+  useEffect(() => {
+    const id = localStorage.logged_in_id;
+    if (id != null) {
+      get_entityList(id).then((items) => {
+        setentityList(items);
+      });
+    }
+  }, []);
 
   let transaction = {
-    entity_name: "",
+    entity_id: "",
     amount: 0,
     transaction_type: "",
     transaction_mode: "",
@@ -62,18 +77,24 @@ function TransactionForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("submmitting form");
-    console.log(transactionObj);
-    handleClear();
-    toast.success("Transaction Submiited Successfully", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-    });
+
+    try {
+      console.log("submmitting form");
+      console.log(transactionObj);
+      dispatch(post_transaction(transactionObj));
+      handleClear();
+      toast.success("Transaction Submiited Successfully", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -87,14 +108,21 @@ function TransactionForm() {
           >
             <Typography variant="h6">Create Transaction</Typography>
             <TextField
-              name="entity_name"
+              name="entity_id"
               variant="outlined"
               label="Entity Name"
               fullWidth
               required
-              value={transactionObj.entity}
+              select
+              value={transactionObj.entity_id}
               onChange={handleChange}
-            />
+            >
+              {entityList.map((entity) => (
+                <MenuItem key={entity._id} value={entity._id}>
+                  {entity.username}
+                </MenuItem>
+              ))}
+            </TextField>
             <TextField
               name="amount"
               variant="outlined"

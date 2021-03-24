@@ -29,3 +29,19 @@ export const update_entity = (currentId, entityObj, id) =>
     address: entityObj.address,
     mobile: entityObj.phone_no,
   });
+
+export const get_entityList = (id) =>
+  fetch(`http://localhost:8000/entityList/${id}`).then((data) => data.json());
+
+export const post_transaction = (transactionObj, id) =>
+  axios.post("http://localhost:8000/transaction", {
+    transactionType: transactionObj.transaction_type,
+    entityId: transactionObj.entity_id,
+    amount: transactionObj.amount,
+    hostId: id,
+    paymentMode: transactionObj.transaction_mode,
+    remarks: transactionObj.transaction_remark,
+  });
+
+export const get_transactions = (id) =>
+  axios.get(`http://localhost:8000/transaction/${id}`);
