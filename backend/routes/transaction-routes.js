@@ -50,8 +50,6 @@ async function findBalance(transactions, id) {
             }
       return balance;
 }
-    
-
 
 
 //Example cURL request
@@ -103,7 +101,7 @@ router.post("/", async (req, res) => {
     host: transaction.hostId,
     paymentMode: transaction.paymentMode,
     transactionTime: transaction.transactionTime,
-    remarks:transaction.remarks
+    remarks: transaction.remarks,
   });
 
   try {
