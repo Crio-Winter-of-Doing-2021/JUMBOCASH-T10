@@ -25,6 +25,8 @@ const entity_types = [
 function EntityForm({ currentId, setCurrentId }) {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [show, setShow] = useState(false);
+
   const currentEntity = useSelector((state) =>
     currentId ? state.entity.entity.find((e) => e._id === currentId) : null
   );
@@ -38,13 +40,15 @@ function EntityForm({ currentId, setCurrentId }) {
   const [entityObj, setEntityObj] = useState(entity);
 
   useEffect(() => {
-    if (currentEntity)
+    if (currentEntity) {
+      setShow(true);
       setEntityObj({
         entity_name: currentEntity.username,
         phone_no: currentEntity.mobile,
         entity_type: currentEntity.userType,
         address: currentEntity.address,
       });
+    }
   }, [currentEntity]);
 
   const handleChange = (e) => {
@@ -127,89 +131,108 @@ function EntityForm({ currentId, setCurrentId }) {
     }
   };
 
+  const handleShow = () => {
+    handleClear();
+    show ? setShow(false) : setShow(true);
+  };
+
   return (
     <>
-      <div className="entity-form-container">
-        <Paper className={classes.paper}>
-          <form
-            autoComplete="off"
-            className={`${classes.root} ${classes.form}`}
-            onSubmit={handleSubmit}
-          >
-            <Typography variant="h6">
-              {currentId ? `Edit` : `Create`} Entity
-            </Typography>
-            <TextField
-              name="entity_name"
-              variant="outlined"
-              label="Entity Name"
-              fullWidth
-              required
-              value={entityObj.entity_name}
-              onChange={handleChange}
-            />
-            <TextField
-              name="phone_no"
-              variant="outlined"
-              label="Phone Number"
-              fullWidth
-              required
-              type="text"
-              value={entityObj.phone_no}
-              onChange={handleChange}
-            />
-
-            <TextField
-              name="entity_type"
-              variant="outlined"
-              label="Entity type"
-              fullWidth
-              required
-              select
-              value={entityObj.entity_type}
-              onChange={handleChange}
-            >
-              {entity_types.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              name="address"
-              variant="outlined"
-              label="Enter the adress of the Entity"
-              fullWidth
-              multiline
-              rows={4}
-              value={entityObj.address}
-              onChange={handleChange}
-              required
-            />
-
-            <Button
-              className={classes.buttonSubmit}
-              variant="contained"
-              color="primary"
-              size="large"
-              type="submit"
-              fullWidth
-            >
-              Submit
-            </Button>
-            <Button
-              variant="contained"
-              color="secondary"
-              size="small"
-              fullWidth
-              onClick={handleClear}
-            >
-              Clear
-            </Button>
-          </form>
-        </Paper>
+      <div className="buttons buttons1">
+        <button
+          type="button"
+          className={show ? "btn btn-danger" : "btn btn-primary"}
+          style={{ marginBottom: "1em" }}
+          onClick={handleShow}
+        >
+          {show ? "Close" : "Create Entity"}
+        </button>
       </div>
-      <ToastContainer />
+      {show ? (
+        <>
+          <div className="entity-form-container">
+            <Paper className={classes.paper}>
+              <form
+                autoComplete="off"
+                className={`${classes.root} ${classes.form}`}
+                onSubmit={handleSubmit}
+              >
+                <Typography variant="h6">
+                  {currentId ? `Edit` : `Create`} Entity
+                </Typography>
+                <TextField
+                  name="entity_name"
+                  variant="outlined"
+                  label="Entity Name"
+                  fullWidth
+                  required
+                  value={entityObj.entity_name}
+                  onChange={handleChange}
+                />
+                <TextField
+                  name="phone_no"
+                  variant="outlined"
+                  label="Phone Number"
+                  fullWidth
+                  required
+                  type="text"
+                  value={entityObj.phone_no}
+                  onChange={handleChange}
+                />
+
+                <TextField
+                  name="entity_type"
+                  variant="outlined"
+                  label="Entity type"
+                  fullWidth
+                  required
+                  select
+                  value={entityObj.entity_type}
+                  onChange={handleChange}
+                >
+                  {entity_types.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                      {option.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+                <TextField
+                  name="address"
+                  variant="outlined"
+                  label="Enter the adress of the Entity"
+                  fullWidth
+                  multiline
+                  rows={4}
+                  value={entityObj.address}
+                  onChange={handleChange}
+                  required
+                />
+
+                <Button
+                  className={classes.buttonSubmit}
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  type="submit"
+                  fullWidth
+                >
+                  Submit
+                </Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  size="small"
+                  fullWidth
+                  onClick={handleClear}
+                >
+                  Clear
+                </Button>
+              </form>
+            </Paper>
+          </div>
+          <ToastContainer />
+        </>
+      ) : null}
     </>
   );
 }

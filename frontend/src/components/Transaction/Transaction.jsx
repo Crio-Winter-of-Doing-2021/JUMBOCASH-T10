@@ -16,7 +16,7 @@ import moment from "moment";
 import clsx from "clsx";
 import { useState } from "react";
 
-function Transaction({ transaction, entityList }) {
+function Transaction({ transaction, entityList, setCurrentId }) {
   const classes = useStyles();
   const entityId =
     transaction.entity._id == null
@@ -26,6 +26,7 @@ function Transaction({ transaction, entityList }) {
   const date = moment(transaction.transactionTime).format("DD-MM-YYYY");
 
   const scrollToTop = () => {
+    setCurrentId(transaction._id);
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -45,9 +46,11 @@ function Transaction({ transaction, entityList }) {
           width: "100%",
           padding: "1em",
           margin: "1em",
+          backgroundColor: "lightgoldenrodyellow",
         }}
       >
         <CardHeader
+          style={{ backgroundColor: "lightgreen" }}
           avatar={
             <Avatar aria-label="transaction" className={classes.avatar}>
               T

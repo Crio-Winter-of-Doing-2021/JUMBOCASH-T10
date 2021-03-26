@@ -31,7 +31,7 @@ const filter2_types = [
 
 const sort_types = [{ value: "amount", label: "Amount" }];
 
-function Transactions() {
+function Transactions({ setCurrentId }) {
   const [entityList, setentityList] = useState([]);
 
   useEffect(() => {
@@ -45,10 +45,17 @@ function Transactions() {
   }, []);
 
   const transactions = useSelector((state) => state.transactions.transaction);
+  const sorted_transactions = [...transactions];
+  sorted_transactions.sort(function (a, b) {
+    if (Number(a.amount) > Number(b.amount)) return 1;
+    else if (Number(a.amount) < Number(b.amount)) return -1;
+    else return 0;
+  });
 
   const [show, setShow] = useState(false);
   const [filter1, setFilter1] = useState("");
   const [filter2, setFilter2] = useState("");
+  const [filter3, setFilter3] = useState("");
   const [sort, setSort] = useState("");
 
   const handleClick = () => {
@@ -66,9 +73,18 @@ function Transactions() {
     setFilter2(e.target.value);
   };
 
-  const handleUnFilter = () => {
+  const handleFilter3Change = (e) => {
+    console.log(e.target.value);
+    setFilter3(e.target.value);
+  };
+
+  const handleUnFilter12 = () => {
     setFilter1("");
     setFilter2("");
+  };
+
+  const handleUnFilter3 = () => {
+    setFilter3("");
   };
 
   const handleSortChange = (e) => {
@@ -140,12 +156,40 @@ function Transactions() {
               <button
                 type="button"
                 className="btn btn-primary"
-                onClick={handleUnFilter}
+                onClick={handleUnFilter12}
               >
                 UnFilter
               </button>
             </div>
           </div>
+          <div className="buttons">
+            <div className="buttons1">
+              <TextField
+                style={{ width: "21em", backgroundColor: " white" }}
+                label="Show Transactions Of"
+                variant="outlined"
+                select
+                value={filter3}
+                onChange={handleFilter3Change}
+              >
+                {entityList.map((entity) => (
+                  <MenuItem key={entity._id} value={entity._id}>
+                    {entity.username}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </div>
+            <div className="buttons1">
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleUnFilter3}
+              >
+                UnFilter
+              </button>
+            </div>
+          </div>
+
           <div className="buttons">
             <div className="buttons1">
               <TextField
@@ -174,13 +218,61 @@ function Transactions() {
             </div>
           </div>
           <div className="buttons2">
-            {transactions.map((transaction) => (
-              <Transaction
-                key={transaction._id}
-                transaction={transaction}
-                entityList={entityList}
-              />
-            ))}
+            {sort === ""
+              ? transactions
+                  .filter(function (transaction) {
+                    return (
+                      transaction.transactionType ===
+                        (filter1 === ""
+                          ? transaction.transactionType
+                          : filter1) &&
+                      transaction.paymentMode ===
+                        (filter2 === "" ? transaction.paymentMode : filter2) &&
+                      (transaction.entity._id == null
+                        ? transaction.entity
+                        : transaction.entity._id) ===
+                        (filter3 === ""
+                          ? transaction.entity._id == null
+                            ? transaction.entity
+                            : transaction.entity._id
+                          : filter3)
+                    );
+                  })
+                  .map((transaction) => (
+                    <Transaction
+                      key={transaction._id}
+                      transaction={transaction}
+                      entityList={entityList}
+                      setCurrentId={setCurrentId}
+                    />
+                  ))
+              : sorted_transactions
+                  .filter(function (transaction) {
+                    return (
+                      transaction.transactionType ===
+                        (filter1 === ""
+                          ? transaction.transactionType
+                          : filter1) &&
+                      transaction.paymentMode ===
+                        (filter2 === "" ? transaction.paymentMode : filter2) &&
+                      (transaction.entity._id == null
+                        ? transaction.entity
+                        : transaction.entity._id) ===
+                        (filter3 === ""
+                          ? transaction.entity._id == null
+                            ? transaction.entity
+                            : transaction.entity._id
+                          : filter3)
+                    );
+                  })
+                  .map((transaction) => (
+                    <Transaction
+                      key={transaction._id}
+                      transaction={transaction}
+                      entityList={entityList}
+                      setCurrentId={setCurrentId}
+                    />
+                  ))}
           </div>
           <div className="buttons1">
             <button

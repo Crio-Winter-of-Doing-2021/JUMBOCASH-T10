@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 
 function DashboardTransaction() {
   const [entityList, setentityList] = useState([]);
+  const [currentId, setCurrentId] = useState(null);
 
   useEffect(() => {
     const id = localStorage.logged_in_id;
@@ -25,10 +26,14 @@ function DashboardTransaction() {
           <Menu />
         </div>
         <div className="transaction-container">
-          <Transactions />
+          <Transactions setCurrentId={setCurrentId} />
         </div>
         <div className="form-container">
-          <TransactionForm entityList={entityList} />
+          <TransactionForm
+            entityList={entityList}
+            currentId={currentId}
+            setCurrentId={setCurrentId}
+          />
         </div>
       </div>
     </>
