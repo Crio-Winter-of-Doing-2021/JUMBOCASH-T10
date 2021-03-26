@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const authRoutes = require("./routes/auth-routes");
 const profileRoutes = require("./routes/profile-routes");
 const transactionRoutes = require("./routes/transaction-routes");
-const passportSetup = require("./config/passport-setup");
+const entityRoutes = require("./routes/entity-routes");
 const cookieSession = require("cookie-session");
 const passport = require("passport");
 
@@ -38,7 +38,8 @@ mongoose.connect(process.env.MONGOLOCAL,{useNewUrlParser: true , useUnifiedTopol
 //setup routes
 app.use("/auth", authRoutes);
 app.use("/profile",profileRoutes);
-app.use("/", transactionRoutes);
+app.use("/transaction", transactionRoutes);
+app.use("/entity", transactionRoutes);
 
 // app.get("/user", (req,res)=>{
 //       res.render("home");
