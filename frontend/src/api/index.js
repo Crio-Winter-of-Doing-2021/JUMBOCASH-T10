@@ -31,7 +31,9 @@ export const update_entity = (currentId, entityObj, id) =>
   });
 
 export const get_entityList = (id) =>
-  fetch(`http://localhost:8000/entityList/${id}`).then((data) => data.json());
+  fetch(`http://localhost:8000/entity/entityList/${id}`).then((data) =>
+    data.json()
+  );
 
 export const post_transaction = (transactionObj, id) =>
   axios.post("http://localhost:8000/transaction", {
