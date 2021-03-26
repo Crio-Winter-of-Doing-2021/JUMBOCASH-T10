@@ -17,9 +17,7 @@ function Entity(props) {
   const { entity, setCurrentId } = props;
 
   const scrollToTop = () => {
-    console.log("hello");
     setCurrentId(entity._id);
-    console.log(entity._id);
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -42,12 +40,12 @@ function Entity(props) {
       >
         <CardHeader
           avatar={
-            <Avatar aria-label="recipe" className={classes.avatar}>
+            <Avatar aria-label="entity" className={classes.avatar}>
               E
             </Avatar>
           }
           action={
-            <IconButton aria-label="settings" onClick={scrollToTop}>
+            <IconButton aria-label="edit" onClick={scrollToTop}>
               <MoreVertIcon />
             </IconButton>
           }

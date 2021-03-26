@@ -6,11 +6,11 @@ import {
   Paper,
   MenuItem,
 } from "@material-ui/core";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import useStyles from "./styles";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { get_entityList } from "../../api/index.js";
+
 import { post_transaction } from "../../actions/index.js";
 import { useDispatch } from "react-redux";
 
@@ -37,20 +37,9 @@ const transaction_modes = [
   },
 ];
 
-function TransactionForm() {
+function TransactionForm({ entityList }) {
   const classes = useStyles();
   const dispatch = useDispatch();
-
-  const [entityList, setentityList] = useState([]);
-
-  useEffect(() => {
-    const id = localStorage.logged_in_id;
-    if (id != null) {
-      get_entityList(id).then((items) => {
-        setentityList(items);
-      });
-    }
-  }, []);
 
   let transaction = {
     entity_id: "",
