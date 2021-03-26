@@ -8,7 +8,7 @@ async function findEntities(entities, id) {
     try {
       if (entity.host._id == id) entityList.push(entity);
     } catch (e) {
-      console.log(e);
+      //console.log(e);
     }
   return entityList;
 }
@@ -19,7 +19,7 @@ async function getAllEntities(entities, id) {
   for (let entity of entities)
     try {
       if (entity.host._id == id) {
-        console.log(entity);
+        //console.log(entity);
         const tempEntity = {
           username: entity.username,
           _id: entity._id,
@@ -27,7 +27,7 @@ async function getAllEntities(entities, id) {
         entityList.push(tempEntity);
       }
     } catch (e) {
-      console.log(e);
+      //console.log(e);
     }
   return entityList;
 }
@@ -57,7 +57,7 @@ router.get("/:id", async (req, res) => {
       res.status(200).json(foundList);
     })
     .catch((err) => {
-      console.log(err);
+      //console.log(err);
       res.status(404).json({ message: err.message });
     });
 });
@@ -78,7 +78,7 @@ router.post("/", async (req, res) => {
   //Form the entity object from the request
   const entity = req.body;
 
-  console.log(entity);
+  //console.log(entity);
 
   const newEntity = new Entity({
     username: entity.username,
@@ -90,10 +90,10 @@ router.post("/", async (req, res) => {
 
   try {
     await newEntity.save();
-    console.log(newEntity);
+    //console.log(newEntity);
     res.status(201).json(newEntity);
   } catch (error) {
-    console.log(error);
+    //console.log(error);
     res.status(404).json({ message: error.message });
   }
 });
@@ -117,7 +117,7 @@ router.get("/entityList/:id", async (req, res) => {
       res.status(200).json(foundList);
     })
     .catch((err) => {
-      console.log(err);
+      //console.log(err);
       res.status(404).json({ message: err.message });
     });
 });

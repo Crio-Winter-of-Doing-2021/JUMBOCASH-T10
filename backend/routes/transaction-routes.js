@@ -10,7 +10,7 @@ const Transaction = require("../models/Transaction");
 //   };
 
 router.get("/", (req, res) => {
-  console.log(req);
+  //console.log(req);
   res.send("Welcome " + req.user.username);
 });
 
@@ -21,7 +21,7 @@ async function findTransactions(transactions, id) {
     try {
       if (transaction.host._id == id) transactionList.push(transaction);
     } catch (e) {
-      console.log(e);
+      //console.log(e);
     }
   return transactionList;
 }
@@ -37,11 +37,11 @@ async function findBalance(transactions, id) {
         } else if (transaction.transactionType == "Debit") {
           balance -= Number(transaction.amount);
         }
-        console.log(balance);
+        //console.log(balance);
       }
       //console.log(transactionList);
     } catch (e) {
-      console.log(e);
+      //console.log(e);
     }
   return balance;
 }
@@ -69,7 +69,7 @@ router.get("/:id", async (req, res) => {
       res.status(200).json(foundList);
     })
     .catch((err) => {
-      console.log(err);
+      //console.log(err);
       res.status(404).json({ message: err.message });
     });
 });
@@ -87,7 +87,7 @@ curl --location --request POST 'http://localhost:3000/transaction' \
 */
 router.post("/", async (req, res) => {
   const transaction = req.body;
-  console.log(transaction);
+  //console.log(transaction);
 
   const newTransaction = new Transaction({
     transactionType: transaction.transactionType,
@@ -101,7 +101,7 @@ router.post("/", async (req, res) => {
 
   try {
     await newTransaction.save();
-    console.log(newTransaction);
+    //console.log(newTransaction);
     res.status(201).json(newTransaction);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -151,6 +151,10 @@ router.patch("/:id", async (req, res) => {
         transaction.host = req.body.hostId;
       }
 
+      if (req.body.remarks) {
+        transaction.remarks = req.body.remarks;
+      }
+
       try {
         await transaction.save();
         res.status(201).json({ id: transaction._id });
@@ -179,7 +183,7 @@ router.get("/balance/:id", async (req, res) => {
       res.status(200).json({ balance: balance });
     })
     .catch((err) => {
-      console.log(err);
+      //console.log(err);
       res.status(404).json({ message: err.message });
     });
 });

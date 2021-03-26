@@ -8,12 +8,12 @@ async function findTransactions(transactions, id){
       let transactionList = [];
       for(let transaction of transactions)
       try{
-            console.log(transaction);
+            //console.log(transaction);
             if(transaction.host._id == id)
                   transactionList.push(transaction);
-                  console.log(transactionList);
+                  //console.log(transactionList);
       }catch(e){
-            console.log(e);
+            //console.log(e);
       }
       return transactionList;
 }
@@ -28,7 +28,7 @@ router.get("/transaction", async (req,res)=>{
       findTransactions(transactions, req.query.id).then(foundList => {
             res.status(200).json(foundList);
       }).catch(err => {
-            console.log(err);
+            //console.log(err);
             res.status(404).json({message:err.message});
       });
 });

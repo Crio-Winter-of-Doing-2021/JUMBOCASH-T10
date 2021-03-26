@@ -28,7 +28,7 @@ router.post("/login",(req,res)=>{
                         thumbnail: profile.imageUrl,      
                   // save the user to the database
                   }).save().then((newUser)=>{
-                        console.log("New user created "+newUser);
+                        //console.log("New user created "+newUser);
                         res.status(201).json({id: newUser._id});
                   });
             }
