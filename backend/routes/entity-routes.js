@@ -16,16 +16,18 @@ async function findEntities(entities, id) {
 }
 
 // Of all the entites, returns an array of entites that belongs to the current user
-async function getAllEntities(entities) {
+async function getAllEntities(entities, id) {
   let entityList = [];
   for (let entity of entities)
     try {
-      console.log(entity);
-      const tempEntity = {
-        username: entity.username,
-        _id: entity._id,
-      };
-      entityList.push(tempEntity);
+      if (entity.host._id == id) {
+        console.log(entity);
+        const tempEntity = {
+          username: entity.username,
+          _id: entity._id,
+        };
+        entityList.push(tempEntity);
+      }
     } catch (e) {
       console.log(e);
     }
@@ -98,7 +100,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get("/", async (req, res) => {
+router.get("/entityList/:id", async (req, res) => {
   /*
             - Find all entities
             - If the entity host is current user, add it to the list
@@ -106,12 +108,13 @@ router.get("/", async (req, res) => {
             */
 
   //let entityList = [];
+  const id = req.params.id;
 
   const entities = await Entity.find().populate("host");
 
   //console.log(entities);
 
-  getAllEntities(entities)
+  getAllEntities(entities, id)
     .then((foundList) => {
       res.status(200).json(foundList);
     })
