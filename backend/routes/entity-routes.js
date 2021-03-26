@@ -6,9 +6,7 @@ async function findEntities(entities, id) {
   let entityList = [];
   for (let entity of entities)
     try {
-      console.log(entity);
       if (entity.host._id == id) entityList.push(entity);
-      console.log(entityList);
     } catch (e) {
       console.log(e);
     }

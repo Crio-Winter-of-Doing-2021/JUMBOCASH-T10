@@ -16,41 +16,35 @@ router.get("/", (req, res) => {
 
 //Of all the transactions, select the transactions of current user and push it to an array
 async function findTransactions(transactions, id) {
-      let transactionList = [];
-      for (let transaction of transactions)
-        try {
-          console.log(transaction);
-          if (transaction.host._id == id) transactionList.push(transaction);
-          console.log(transactionList);
-        } catch (e) {
-          console.log(e);
-        }
-      return transactionList;
+  let transactionList = [];
+  for (let transaction of transactions)
+    try {
+      if (transaction.host._id == id) transactionList.push(transaction);
+    } catch (e) {
+      console.log(e);
     }
-    
-
-async function findBalance(transactions, id) {
-      let balance = 0;
-      for (let transaction of transactions)
-            try {
-                  //console.log(transaction);
-                  if (transaction.host._id == id){
-                        if(transaction.transactionType == "CREDIT"){
-                              balance += transaction.amount;
-                        }
-                        else if(transaction.transactionType == "DEBIT"){
-                              balance -= transaction.amount;
-                        }
-                        console.log(balance);
-                  }
-            //console.log(transactionList);
-            }
-            catch (e) {
-                  console.log(e);
-            }
-      return balance;
+  return transactionList;
 }
 
+async function findBalance(transactions, id) {
+  let balance = 0;
+  for (let transaction of transactions)
+    try {
+      //console.log(transaction);
+      if (transaction.host._id == id) {
+        if (transaction.transactionType == "Credit") {
+          balance += Number(transaction.amount);
+        } else if (transaction.transactionType == "Debit") {
+          balance -= Number(transaction.amount);
+        }
+        console.log(balance);
+      }
+      //console.log(transactionList);
+    } catch (e) {
+      console.log(e);
+    }
+  return balance;
+}
 
 //Example cURL request
 /*
@@ -66,7 +60,7 @@ router.get("/:id", async (req, res) => {
       */
 
   const transactions = await Transaction.find()
-      .sort({'transactionTime':'desc'})
+    .sort({ transactionTime: "desc" })
     .populate("entity")
     .populate("host");
 
@@ -175,14 +169,14 @@ router.patch("/:id", async (req, res) => {
   }
 });
 
-router.get("/balance/:id", async(req,res) => {
-      const transactions = await Transaction.find()
-            .populate("entity")
-            .populate("host");
+router.get("/balance/:id", async (req, res) => {
+  const transactions = await Transaction.find()
+    .populate("entity")
+    .populate("host");
 
   findBalance(transactions, req.params.id)
     .then((balance) => {
-      res.status(200).json({balance:balance});
+      res.status(200).json({ balance: balance });
     })
     .catch((err) => {
       console.log(err);
