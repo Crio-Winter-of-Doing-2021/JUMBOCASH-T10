@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Transaction = require("../models/Transaction");
+const Entity = require("../models/Entity");
 
 // const authCheck = (req, res, next) => {
 //       if(!req.user){
@@ -101,6 +102,17 @@ router.post("/", async (req, res) => {
 
   try {
     await newTransaction.save();
+    const entity = await Entity.findOne({ _id: transaction.entityId });
+    if (entity) {
+      const numberOfTransactions = entity.numberOfTransactions;
+      entity.numberOfTransactions = numberOfTransactions+1;
+      //console.log(numberOfTransactions);
+      try {
+            await entity.save();
+          } catch (error) {
+            res.status(404).json({ message: error.message });
+          }
+      }
     //console.log(newTransaction);
     res.status(201).json(newTransaction);
   } catch (error) {
