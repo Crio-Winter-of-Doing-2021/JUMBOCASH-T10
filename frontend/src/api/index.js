@@ -8,3 +8,57 @@ export const login = (id) =>
       id,
     },
   });
+
+export const post_entity = (entityObj, id) =>
+  axios.post("http://localhost:8000/entity", {
+    username: entityObj.entity_name,
+    userType: entityObj.entity_type,
+    hostId: id,
+    address: entityObj.address,
+    mobile: entityObj.phone_no,
+  });
+
+export const get_entities = (id) =>
+  axios.get(`http://localhost:8000/entity/${id}`);
+
+export const update_entity = (currentId, entityObj, id) =>
+  axios.patch(`http://localhost:8000/entity/${currentId}`, {
+    username: entityObj.entity_name,
+    userType: entityObj.entity_type,
+    hostId: id,
+    address: entityObj.address,
+    mobile: entityObj.phone_no,
+  });
+
+export const get_entityList = (id) =>
+  fetch(`http://localhost:8000/entity/entityList/${id}`).then((data) =>
+    data.json()
+  );
+
+export const post_transaction = (transactionObj, id) =>
+  axios.post(`http://localhost:8000/transaction`, {
+    transactionType: transactionObj.transaction_type,
+    entityId: transactionObj.entity_id,
+    amount: transactionObj.amount,
+    hostId: id,
+    paymentMode: transactionObj.transaction_mode,
+    remarks: transactionObj.transaction_remark,
+  });
+
+export const get_transactions = (id) =>
+  axios.get(`http://localhost:8000/transaction/${id}`);
+
+export const update_transaction = (currentId, transactionObj, id) =>
+  axios.patch(`http://localhost:8000/transaction/${currentId}`, {
+    transactionType: transactionObj.transaction_type,
+    entityId: transactionObj.entity_id,
+    amount: transactionObj.amount,
+    hostId: id,
+    paymentMode: transactionObj.transaction_mode,
+    remarks: transactionObj.transaction_remark,
+  });
+
+export const get_balance = (id) =>
+  fetch(`http://localhost:8000/transaction/balance/${id}`).then((data) =>
+    data.json()
+  );

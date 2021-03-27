@@ -7,7 +7,10 @@ const entitySchema = new Schema({
       host: { 
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
-      }
+      },
+      address: String,
+      mobile: String,
+      numberOfTransactions: { type: Number, default: 0 }
 });
 
 const Entity = mongoose.model("Entity",entitySchema);

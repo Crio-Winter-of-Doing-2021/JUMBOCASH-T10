@@ -28,6 +28,7 @@ const Form = () => {
       console.log(user.data.id);
       localStorage.setItem("logged_in_id", user.data.id);
       dispatch(login(user.data.id));
+      alert("Login successful");
       history.push("/dashboard");
     } catch (error) {
       console.log(error);
@@ -56,6 +57,7 @@ const Form = () => {
       console.log(user.data.id);
       localStorage.setItem("logged_in_id", user.data.id);
       dispatch(login(user.data.id));
+      alert("Login successful");
       history.push("/dashboard");
     } catch (error) {
       console.log(error);
@@ -96,7 +98,7 @@ const Form = () => {
 
         <FacebookLogin
           appId="192298908937797"
-          autoLoad
+          autoLoad={false}
           callback={responseFacebook}
           fields="name,email,picture"
           render={(renderProps) => (
