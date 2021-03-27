@@ -39,7 +39,7 @@ router.post("/login",(req,res)=>{
 
 /*
 Example Request
-curl --location --request GET 'http://localhost:3000/auth/user/604f058d8d'
+curl --location --request GET 'http://localhost:3000/auth/user'
 */
 router.get("/user", async (req,res)=>{
 
