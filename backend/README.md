@@ -36,6 +36,8 @@
 
 The database consists of User, entities related to the user (Customer/Vendor) and transactions that take place among the user and entity.
 
+[![schema]]
+
 [schema]
 
 ## User
