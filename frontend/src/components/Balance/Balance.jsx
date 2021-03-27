@@ -30,7 +30,7 @@ function Balance() {
         }}
       >
         <Typography variant="h4">
-          {balance
+          {balance !== null
             ? balance >= 0
               ? ` 😃 You have a Profit of ₹ ${balance}`
               : ` ☹️ You currently owe ₹ ${-balance}`
