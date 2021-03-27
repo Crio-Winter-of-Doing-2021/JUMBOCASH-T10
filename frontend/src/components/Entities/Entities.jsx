@@ -19,30 +19,9 @@ const sort_type = [{ value: "name", label: "Entity Name" }];
 function Entities({ setCurrentId }) {
   const entities = useSelector((state) => state.entity.entity);
 
-  const filtered_entities_Customer = entities.filter(function (entity) {
-    return entity.userType === "Customer";
-  });
-  const filtered_entities_Vendor = entities.filter(function (entity) {
-    return entity.userType === "Vendor";
-  });
-
   const sorted_entities = [...entities];
-  const filtered_sorted_entities_Customer = [...filtered_entities_Customer];
-  const filtered_sorted_entities_Vendor = [...filtered_entities_Vendor];
 
   sorted_entities.sort(function (a, b) {
-    if (a.username.toUpperCase() > b.username.toUpperCase()) return 1;
-    else if (a.username.toUpperCase() < b.username.toUpperCase()) return -1;
-    else return 0;
-  });
-
-  filtered_sorted_entities_Customer.sort(function (a, b) {
-    if (a.username.toUpperCase() > b.username.toUpperCase()) return 1;
-    else if (a.username.toUpperCase() < b.username.toUpperCase()) return -1;
-    else return 0;
-  });
-
-  filtered_sorted_entities_Vendor.sort(function (a, b) {
     if (a.username.toUpperCase() > b.username.toUpperCase()) return 1;
     else if (a.username.toUpperCase() < b.username.toUpperCase()) return -1;
     else return 0;
@@ -146,65 +125,35 @@ function Entities({ setCurrentId }) {
             </div>
           </div>
           <div className="buttons2">
-            {sort === "" && filter === ""
-              ? entities.map((entity) => (
-                  <Entity
-                    key={entity._id}
-                    entity={entity}
-                    setCurrentId={setCurrentId}
-                  />
-                ))
-              : null}
-
-            {sort !== "" && filter === ""
-              ? sorted_entities.map((entity) => (
-                  <Entity
-                    key={entity._id}
-                    entity={entity}
-                    setCurrentId={setCurrentId}
-                  />
-                ))
-              : null}
-
-            {sort === "" && filter === "Customer"
-              ? filtered_entities_Customer.map((entity) => (
-                  <Entity
-                    key={entity._id}
-                    entity={entity}
-                    setCurrentId={setCurrentId}
-                  />
-                ))
-              : null}
-
-            {sort !== "" && filter === "Customer"
-              ? filtered_sorted_entities_Customer.map((entity) => (
-                  <Entity
-                    key={entity._id}
-                    entity={entity}
-                    setCurrentId={setCurrentId}
-                  />
-                ))
-              : null}
-
-            {sort === "" && filter === "Vendor"
-              ? filtered_entities_Vendor.map((entity) => (
-                  <Entity
-                    key={entity._id}
-                    entity={entity}
-                    setCurrentId={setCurrentId}
-                  />
-                ))
-              : null}
-
-            {sort !== "" && filter === "Vendor"
-              ? filtered_sorted_entities_Vendor.map((entity) => (
-                  <Entity
-                    key={entity._id}
-                    entity={entity}
-                    setCurrentId={setCurrentId}
-                  />
-                ))
-              : null}
+            {sort === ""
+              ? entities
+                  .filter(function (entity) {
+                    return (
+                      entity.userType ===
+                      (filter === "" ? entity.userType : filter)
+                    );
+                  })
+                  .map((entity) => (
+                    <Entity
+                      key={entity._id}
+                      entity={entity}
+                      setCurrentId={setCurrentId}
+                    />
+                  ))
+              : sorted_entities
+                  .filter(function (entity) {
+                    return (
+                      entity.userType ===
+                      (filter === "" ? entity.userType : filter)
+                    );
+                  })
+                  .map((entity) => (
+                    <Entity
+                      key={entity._id}
+                      entity={entity}
+                      setCurrentId={setCurrentId}
+                    />
+                  ))}
           </div>
           <div className="buttons1">
             <button

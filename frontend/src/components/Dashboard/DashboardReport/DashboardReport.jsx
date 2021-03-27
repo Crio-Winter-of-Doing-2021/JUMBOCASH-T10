@@ -1,5 +1,6 @@
 import React from "react";
 import Menu from "../../Menu/Menu";
+import Balance from "../../Balance/Balance";
 
 function DashboardReport() {
   return (
@@ -8,7 +9,9 @@ function DashboardReport() {
         <div className="menu-container">
           <Menu />
         </div>
-        <div className="report-container">reports</div>
+        <div className="report-container">
+          <Balance />
+        </div>
       </div>
     </>
   );
