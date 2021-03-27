@@ -19,15 +19,6 @@
         <li><a href="#transaction">Transaction</a></li>
       </ul>
     </li>
-    <li>
-      <a href="#running">Running the project</a>
-      <ul>
-        <li><a href="#get-the-project">Get the project</a></li>
-      </ul>
-      <ul>
-        <li><a href="#running-the-backend">Running the backend</a></li>
-      </ul>
-    </li>
   </ol>
 </details>
 
@@ -36,9 +27,7 @@
 
 The database consists of User, entities related to the user (Customer/Vendor) and transactions that take place among the user and entity.
 
-[![schema]]
-
-[schema]
+![schema]
 
 ## User
 
@@ -72,7 +61,6 @@ APIs for viewing and manipulating the entities that the User has.
 ## Transaction
 
 APIs for viewing and manipulating the transactions that the User has.
-
 
 * [Create a Transaction](routes/transaction.md) : `POST /transaction`
 * [Get all transactions of a user](routes/transaction.md) : `GET /transaction/user_id`
