@@ -9,7 +9,8 @@ const entitySchema = new Schema({
             ref: 'User'
       },
       address: String,
-      mobile: String
+      mobile: String,
+      numberOfTransactions: { type: Number, default: 0 }
 });
 
 const Entity = mongoose.model("Entity",entitySchema);

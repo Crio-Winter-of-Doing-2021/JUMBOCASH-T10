@@ -13,6 +13,28 @@ async function findEntities(entities, id) {
   return entityList;
 }
 
+async function findfavouriteEntity(entities, userType, id) {
+      let favouriteEntity;
+      let maxTransactions = 0;
+      //console.log(userType, id);
+      for (let entity of entities)
+        try {
+            if (entity.host._id == id && entity.userType == userType) 
+            {
+                //  console.log("trans = "+entity.numberOfTransactions, maxTransactions);
+                if(entity.numberOfTransactions > maxTransactions)
+                {
+                  maxTransactions = entity.numberOfTransactions;
+                  favouriteEntity = entity;
+                  console.log("Found "+entity);
+                }
+            }
+        } catch (e) {
+          //console.log(e);
+        }
+      return favouriteEntity;
+    }
+
 // Of all the entites, returns an array of entites that belongs to the current user
 async function getAllEntities(entities, id) {
   let entityList = [];
@@ -163,6 +185,34 @@ router.patch("/:id", async (req, res) => {
       invalid_id: "entity with ID not found, please provide a valid ID",
     });
   }
+});
+
+router.get("/favouriteVendor/:id", async (req,res)=>{
+      
+      const entities = await Entity.find().populate("host");
+
+      findfavouriteEntity(entities, "Vendor", req.params.id)
+      .then((foundList) => {
+            res.status(200).json(foundList);
+      })
+      .catch((err) => {
+            //console.log(err);
+            res.status(404).json({ message: err.message });
+      });
+});
+
+router.get("/favouriteCustomer/:id", async (req,res)=>{
+      
+      const entities = await Entity.find().populate("host");
+
+      findfavouriteEntity(entities, "Customer", req.params.id)
+      .then((foundList) => {
+            res.status(200).json(foundList);
+      })
+      .catch((err) => {
+            //console.log(err);
+            res.status(404).json({ message: err.message });
+      });
 });
 
 module.exports = router;
