@@ -47,3 +47,8 @@ export const post_transaction = (transactionObj, id) =>
 
 export const get_transactions = (id) =>
   axios.get(`http://localhost:8000/transaction/${id}`);
+
+export const get_balance = (id) =>
+  fetch(`http://localhost:8000/transaction/balance/${id}`).then((data) =>
+    data.json()
+  );
