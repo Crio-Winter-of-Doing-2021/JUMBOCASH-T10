@@ -23,16 +23,20 @@
 .transaction-container {
   padding: 3em 0;
   justify-self: stretch;
+  margin: 0 1em;
 }
 
 .entity-container {
   padding: 3em 0;
   justify-self: stretch;
+  margin: 0 1em;
 }
 
 .report-container {
   padding: 3em 0;
-  justify-self: center;
+  justify-self: stretch;
+  margin: 2em 1em;
+  padding: 1em;
 }
 
 .form-container {

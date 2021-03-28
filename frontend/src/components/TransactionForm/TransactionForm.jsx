@@ -11,8 +11,7 @@ import { useState, useEffect } from "react";
 import useStyles from "./styles";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-import { post_transaction } from "../../actions/index.js";
+import { post_transaction, update_transaction } from "../../actions/index.js";
 import { useDispatch, useSelector } from "react-redux";
 
 const transaction_types = [
@@ -92,6 +91,28 @@ function TransactionForm({ entityList, currentId, setCurrentId }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (currentId) {
+      try {
+        console.log("updating form");
+        console.log(transactionObj);
+        dispatch(update_transaction(currentId, transactionObj));
+        handleClear();
+
+        toast.success("Transaction Updated Successfully", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+      return;
+    }
 
     try {
       console.log("submmitting form");
@@ -189,7 +210,7 @@ function TransactionForm({ entityList, currentId, setCurrentId }) {
                 <TextField
                   name="transaction_type"
                   variant="outlined"
-                  label="Transaction Yype"
+                  label="Transaction Type"
                   fullWidth
                   required
                   select

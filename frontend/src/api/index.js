@@ -36,7 +36,7 @@ export const get_entityList = (id) =>
   );
 
 export const post_transaction = (transactionObj, id) =>
-  axios.post("http://localhost:8000/transaction", {
+  axios.post(`http://localhost:8000/transaction`, {
     transactionType: transactionObj.transaction_type,
     entityId: transactionObj.entity_id,
     amount: transactionObj.amount,
@@ -47,3 +47,18 @@ export const post_transaction = (transactionObj, id) =>
 
 export const get_transactions = (id) =>
   axios.get(`http://localhost:8000/transaction/${id}`);
+
+export const update_transaction = (currentId, transactionObj, id) =>
+  axios.patch(`http://localhost:8000/transaction/${currentId}`, {
+    transactionType: transactionObj.transaction_type,
+    entityId: transactionObj.entity_id,
+    amount: transactionObj.amount,
+    hostId: id,
+    paymentMode: transactionObj.transaction_mode,
+    remarks: transactionObj.transaction_remark,
+  });
+
+export const get_balance = (id) =>
+  fetch(`http://localhost:8000/transaction/balance/${id}`).then((data) =>
+    data.json()
+  );
