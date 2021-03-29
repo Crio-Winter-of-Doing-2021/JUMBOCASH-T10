@@ -7,9 +7,9 @@ function Balance() {
   const [balance, setBalance] = useState(null);
 
   useEffect(() => {
-    const id = localStorage.logged_in_id;
-    if (id != null) {
-      get_balance(id).then((data) => {
+    const token = localStorage.token;
+    if (token != null) {
+      get_balance().then((data) => {
         const balance = data.balance;
         setBalance(balance);
         console.log(balance);

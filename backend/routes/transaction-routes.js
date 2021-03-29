@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Transaction = require("../models/Transaction");
 const Entity = require("../models/Entity");
+const auth = require("../middleware/auth.js");
 
 // const authCheck = (req, res, next) => {
 //       if(!req.user){
@@ -10,10 +11,10 @@ const Entity = require("../models/Entity");
 //       }
 //   };
 
-router.get("/", (req, res) => {
-  //console.log(req);
-  res.send("Welcome " + req.user.username);
-});
+// router.get("/", (req, res) => {
+//   //console.log(req);
+//   res.send("Welcome " + req.user.username);
+// });
 
 //Of all the transactions, select the transactions of current user and push it to an array
 async function findTransactions(transactions, id) {
@@ -52,7 +53,10 @@ async function findBalance(transactions, id) {
 curl --location --request GET 'http://localhost:3000/transaction/604a1ec3d7f2b33c341847bf'
 */
 //Get all transactions of current user
-router.get("/:id", async (req, res) => {
+router.get("/", auth, async (req, res) => {
+  if (!req.userId) {
+    return res.status(401).json({ message: "Unauthenticated" });
+  }
   /*
             - Find all transactions
             - Of all transactions, filter the current user transactions
@@ -65,7 +69,7 @@ router.get("/:id", async (req, res) => {
     .populate("entity")
     .populate("host");
 
-  findTransactions(transactions, req.params.id)
+  findTransactions(transactions, req.userId)
     .then((foundList) => {
       res.status(200).json(foundList);
     })
@@ -86,7 +90,11 @@ curl --location --request POST 'http://localhost:3000/transaction' \
     "amount": 15000
 }'
 */
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
+  if (!req.userId) {
+    return res.status(401).json({ message: "Unauthenticated" });
+  }
+
   const transaction = req.body;
   //console.log(transaction);
 
@@ -105,14 +113,14 @@ router.post("/", async (req, res) => {
     const entity = await Entity.findOne({ _id: transaction.entityId });
     if (entity) {
       const numberOfTransactions = entity.numberOfTransactions;
-      entity.numberOfTransactions = numberOfTransactions+1;
+      entity.numberOfTransactions = numberOfTransactions + 1;
       //console.log(numberOfTransactions);
       try {
-            await entity.save();
-          } catch (error) {
-            res.status(404).json({ message: error.message });
-          }
+        await entity.save();
+      } catch (error) {
+        res.status(404).json({ message: error.message });
       }
+    }
     //console.log(newTransaction);
     res.status(201).json(newTransaction);
   } catch (error) {
@@ -130,7 +138,11 @@ curl --location --request PATCH 'http://localhost:8000/transaction/604c63d9cbb44
 }'
 */
 
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", auth, async (req, res) => {
+  if (!req.userId) {
+    return res.status(401).json({ message: "Unauthenticated" });
+  }
+
   const transactionId = req.params.id;
 
   if (transactionId.match(/^[0-9a-fA-F]{24}$/)) {
@@ -185,12 +197,16 @@ router.patch("/:id", async (req, res) => {
   }
 });
 
-router.get("/balance/:id", async (req, res) => {
+router.get("/balance", auth, async (req, res) => {
+  if (!req.userId) {
+    return res.status(401).json({ message: "Unauthenticated" });
+  }
+
   const transactions = await Transaction.find()
     .populate("entity")
     .populate("host");
 
-  findBalance(transactions, req.params.id)
+  findBalance(transactions, req.userId)
     .then((balance) => {
       res.status(200).json({ balance: balance });
     })

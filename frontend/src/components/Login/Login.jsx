@@ -14,6 +14,7 @@ const Form = () => {
   const history = useHistory();
 
   const googleSuccess = async (res) => {
+    console.log(res);
     const result = res?.profileObj;
     // console.log(result);
     // google success result
@@ -25,6 +26,8 @@ const Form = () => {
         imageUrl: result.imageUrl,
       });
 
+      console.log(user.data.token);
+      localStorage.setItem("token", user.data.token);
       console.log(user.data.id);
       localStorage.setItem("logged_in_id", user.data.id);
       dispatch(login(user.data.id));
@@ -54,6 +57,8 @@ const Form = () => {
         imageUrl: res?.picture.data.url,
       });
 
+      console.log(user.data.token);
+      localStorage.setItem("token", user.data.token);
       console.log(user.data.id);
       localStorage.setItem("logged_in_id", user.data.id);
       dispatch(login(user.data.id));

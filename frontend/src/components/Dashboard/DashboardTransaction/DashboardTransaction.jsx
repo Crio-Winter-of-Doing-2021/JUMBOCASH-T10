@@ -13,7 +13,7 @@ function DashboardTransaction() {
   useEffect(() => {
     const id = localStorage.logged_in_id;
     if (id != null) {
-      get_entityList(id).then((items) => {
+      get_entityList().then((items) => {
         setentityList(items);
       });
     }

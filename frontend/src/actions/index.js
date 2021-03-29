@@ -10,9 +10,9 @@ import {
 
 export const login = (id) => async (dispatch) => {
   try {
-    const user = await api.login(id);
-    const entity = await api.get_entities(id);
-    const transaction = await api.get_transactions(id);
+    const user = await api.login();
+    const entity = await api.get_entities();
+    const transaction = await api.get_transactions();
     dispatch({
       type: LOGIN,
       user: user.data,
