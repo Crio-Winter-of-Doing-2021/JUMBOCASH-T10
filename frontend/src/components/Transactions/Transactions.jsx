@@ -52,16 +52,10 @@ function Transactions({ setCurrentId }) {
     else return 0;
   });
 
-  const [show, setShow] = useState(false);
   const [filter1, setFilter1] = useState("");
   const [filter2, setFilter2] = useState("");
   const [filter3, setFilter3] = useState("");
   const [sort, setSort] = useState("");
-
-  const handleClick = () => {
-    setShow(true);
-    console.log(show);
-  };
 
   const handleFilter1Change = (e) => {
     console.log(e.target.value);
@@ -105,186 +99,169 @@ function Transactions({ setCurrentId }) {
 
   return (
     <>
-      <div className="buttons buttons1">
-        <button type="button" class="btn btn-primary" onClick={handleClick}>
-          Get All Transactions
+      <div className="buttons">
+        <div className="buttons1">
+          <TextField
+            style={{
+              width: "10em",
+              backgroundColor: "white",
+              margin: "0px 0.5em",
+              overflowWrap: "break-word",
+            }}
+            variant="outlined"
+            label="Transaction Type"
+            select
+            value={filter1}
+            onChange={handleFilter1Change}
+          >
+            {filter1_types.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            style={{
+              width: "10em",
+              backgroundColor: "white",
+              margin: "0px 0.5em",
+            }}
+            variant="outlined"
+            label="Payment Mode"
+            select
+            value={filter2}
+            onChange={handleFilter2Change}
+          >
+            {filter2_types.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        </div>
+        <div className="buttons1">
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleUnFilter12}
+          >
+            UnFilter
+          </button>
+        </div>
+      </div>
+      <div className="buttons">
+        <div className="buttons1">
+          <TextField
+            style={{ width: "21em", backgroundColor: " white" }}
+            label="Show Transactions Of"
+            variant="outlined"
+            select
+            value={filter3}
+            onChange={handleFilter3Change}
+          >
+            {entityList.map((entity) => (
+              <MenuItem key={entity._id} value={entity._id}>
+                {entity.username}
+              </MenuItem>
+            ))}
+          </TextField>
+        </div>
+        <div className="buttons1">
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleUnFilter3}
+          >
+            UnFilter
+          </button>
+        </div>
+      </div>
+
+      <div className="buttons">
+        <div className="buttons1">
+          <TextField
+            style={{ width: "21em", backgroundColor: " white" }}
+            label="Sort According to"
+            variant="outlined"
+            select
+            value={sort}
+            onChange={handleSortChange}
+          >
+            {sort_types.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        </div>
+        <div className="buttons1">
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleUnSort}
+          >
+            UnSort
+          </button>
+        </div>
+      </div>
+      <div className="buttons2">
+        {sort === ""
+          ? transactions
+              .filter(function (transaction) {
+                return (
+                  transaction.transactionType ===
+                    (filter1 === "" ? transaction.transactionType : filter1) &&
+                  transaction.paymentMode ===
+                    (filter2 === "" ? transaction.paymentMode : filter2) &&
+                  (transaction.entity._id == null
+                    ? transaction.entity
+                    : transaction.entity._id) ===
+                    (filter3 === ""
+                      ? transaction.entity._id == null
+                        ? transaction.entity
+                        : transaction.entity._id
+                      : filter3)
+                );
+              })
+              .map((transaction) => (
+                <Transaction
+                  key={transaction._id}
+                  transaction={transaction}
+                  entityList={entityList}
+                  setCurrentId={setCurrentId}
+                />
+              ))
+          : sorted_transactions
+              .filter(function (transaction) {
+                return (
+                  transaction.transactionType ===
+                    (filter1 === "" ? transaction.transactionType : filter1) &&
+                  transaction.paymentMode ===
+                    (filter2 === "" ? transaction.paymentMode : filter2) &&
+                  (transaction.entity._id == null
+                    ? transaction.entity
+                    : transaction.entity._id) ===
+                    (filter3 === ""
+                      ? transaction.entity._id == null
+                        ? transaction.entity
+                        : transaction.entity._id
+                      : filter3)
+                );
+              })
+              .map((transaction) => (
+                <Transaction
+                  key={transaction._id}
+                  transaction={transaction}
+                  entityList={entityList}
+                  setCurrentId={setCurrentId}
+                />
+              ))}
+      </div>
+      <div className="buttons1">
+        <button type="button" className="btn btn-primary" onClick={scrollToTop}>
+          Go To Top
         </button>
       </div>
-      {show ? (
-        <>
-          <div className="buttons">
-            <div className="buttons1">
-              <TextField
-                style={{
-                  width: "10em",
-                  backgroundColor: "white",
-                  margin: "0px 0.5em",
-                  overflowWrap: "break-word",
-                }}
-                variant="outlined"
-                label="Transaction Type"
-                select
-                value={filter1}
-                onChange={handleFilter1Change}
-              >
-                {filter1_types.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <TextField
-                style={{
-                  width: "10em",
-                  backgroundColor: "white",
-                  margin: "0px 0.5em",
-                }}
-                variant="outlined"
-                label="Payment Mode"
-                select
-                value={filter2}
-                onChange={handleFilter2Change}
-              >
-                {filter2_types.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </div>
-            <div className="buttons1">
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={handleUnFilter12}
-              >
-                UnFilter
-              </button>
-            </div>
-          </div>
-          <div className="buttons">
-            <div className="buttons1">
-              <TextField
-                style={{ width: "21em", backgroundColor: " white" }}
-                label="Show Transactions Of"
-                variant="outlined"
-                select
-                value={filter3}
-                onChange={handleFilter3Change}
-              >
-                {entityList.map((entity) => (
-                  <MenuItem key={entity._id} value={entity._id}>
-                    {entity.username}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </div>
-            <div className="buttons1">
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={handleUnFilter3}
-              >
-                UnFilter
-              </button>
-            </div>
-          </div>
-
-          <div className="buttons">
-            <div className="buttons1">
-              <TextField
-                style={{ width: "21em", backgroundColor: " white" }}
-                label="Sort According to"
-                variant="outlined"
-                select
-                value={sort}
-                onChange={handleSortChange}
-              >
-                {sort_types.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </div>
-            <div className="buttons1">
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={handleUnSort}
-              >
-                UnSort
-              </button>
-            </div>
-          </div>
-          <div className="buttons2">
-            {sort === ""
-              ? transactions
-                  .filter(function (transaction) {
-                    return (
-                      transaction.transactionType ===
-                        (filter1 === ""
-                          ? transaction.transactionType
-                          : filter1) &&
-                      transaction.paymentMode ===
-                        (filter2 === "" ? transaction.paymentMode : filter2) &&
-                      (transaction.entity._id == null
-                        ? transaction.entity
-                        : transaction.entity._id) ===
-                        (filter3 === ""
-                          ? transaction.entity._id == null
-                            ? transaction.entity
-                            : transaction.entity._id
-                          : filter3)
-                    );
-                  })
-                  .map((transaction) => (
-                    <Transaction
-                      key={transaction._id}
-                      transaction={transaction}
-                      entityList={entityList}
-                      setCurrentId={setCurrentId}
-                    />
-                  ))
-              : sorted_transactions
-                  .filter(function (transaction) {
-                    return (
-                      transaction.transactionType ===
-                        (filter1 === ""
-                          ? transaction.transactionType
-                          : filter1) &&
-                      transaction.paymentMode ===
-                        (filter2 === "" ? transaction.paymentMode : filter2) &&
-                      (transaction.entity._id == null
-                        ? transaction.entity
-                        : transaction.entity._id) ===
-                        (filter3 === ""
-                          ? transaction.entity._id == null
-                            ? transaction.entity
-                            : transaction.entity._id
-                          : filter3)
-                    );
-                  })
-                  .map((transaction) => (
-                    <Transaction
-                      key={transaction._id}
-                      transaction={transaction}
-                      entityList={entityList}
-                      setCurrentId={setCurrentId}
-                    />
-                  ))}
-          </div>
-          <div className="buttons1">
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={scrollToTop}
-            >
-              Go To Top
-            </button>
-          </div>
-        </>
-      ) : null}
     </>
   );
 }

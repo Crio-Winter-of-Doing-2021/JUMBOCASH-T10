@@ -27,14 +27,8 @@ function Entities({ setCurrentId }) {
     else return 0;
   });
 
-  const [show, setShow] = useState(false);
   const [filter, setFilter] = useState("");
   const [sort, setSort] = useState("");
-
-  const handleClick = () => {
-    setShow(true);
-    console.log(show);
-  };
 
   const handleFilterChange = (e) => {
     console.log(e.target.value);
@@ -63,109 +57,94 @@ function Entities({ setCurrentId }) {
 
   return (
     <>
-      <div className="buttons buttons1">
-        <button type="button" className="btn btn-primary" onClick={handleClick}>
-          Get All Entities
+      <div className="buttons">
+        <div className="buttons1">
+          <TextField
+            style={{ width: "15em", backgroundColor: "white" }}
+            variant="outlined"
+            label="Entity Type"
+            select
+            value={filter}
+            onChange={handleFilterChange}
+          >
+            {entity_types.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        </div>
+        <div className="buttons1">
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleUnFilter}
+          >
+            UnFilter
+          </button>
+        </div>
+      </div>
+      <div className="buttons">
+        <div className="buttons1">
+          <TextField
+            style={{ width: "15em", backgroundColor: " white" }}
+            label="Sort According to"
+            variant="outlined"
+            select
+            value={sort}
+            onChange={handleSortChange}
+          >
+            {sort_type.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+        </div>
+        <div className="buttons1">
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleUnSort}
+          >
+            UnSort
+          </button>
+        </div>
+      </div>
+      <div className="buttons2">
+        {sort === ""
+          ? entities
+              .filter(function (entity) {
+                return (
+                  entity.userType === (filter === "" ? entity.userType : filter)
+                );
+              })
+              .map((entity) => (
+                <Entity
+                  key={entity._id}
+                  entity={entity}
+                  setCurrentId={setCurrentId}
+                />
+              ))
+          : sorted_entities
+              .filter(function (entity) {
+                return (
+                  entity.userType === (filter === "" ? entity.userType : filter)
+                );
+              })
+              .map((entity) => (
+                <Entity
+                  key={entity._id}
+                  entity={entity}
+                  setCurrentId={setCurrentId}
+                />
+              ))}
+      </div>
+      <div className="buttons1">
+        <button type="button" className="btn btn-primary" onClick={scrollToTop}>
+          Go To Top
         </button>
       </div>
-      {show ? (
-        <>
-          <div className="buttons">
-            <div className="buttons1">
-              <TextField
-                style={{ width: "15em", backgroundColor: "white" }}
-                variant="outlined"
-                label="Entity Type"
-                select
-                value={filter}
-                onChange={handleFilterChange}
-              >
-                {entity_types.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </div>
-            <div className="buttons1">
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={handleUnFilter}
-              >
-                UnFilter
-              </button>
-            </div>
-          </div>
-          <div className="buttons">
-            <div className="buttons1">
-              <TextField
-                style={{ width: "15em", backgroundColor: " white" }}
-                label="Sort According to"
-                variant="outlined"
-                select
-                value={sort}
-                onChange={handleSortChange}
-              >
-                {sort_type.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </div>
-            <div className="buttons1">
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={handleUnSort}
-              >
-                UnSort
-              </button>
-            </div>
-          </div>
-          <div className="buttons2">
-            {sort === ""
-              ? entities
-                  .filter(function (entity) {
-                    return (
-                      entity.userType ===
-                      (filter === "" ? entity.userType : filter)
-                    );
-                  })
-                  .map((entity) => (
-                    <Entity
-                      key={entity._id}
-                      entity={entity}
-                      setCurrentId={setCurrentId}
-                    />
-                  ))
-              : sorted_entities
-                  .filter(function (entity) {
-                    return (
-                      entity.userType ===
-                      (filter === "" ? entity.userType : filter)
-                    );
-                  })
-                  .map((entity) => (
-                    <Entity
-                      key={entity._id}
-                      entity={entity}
-                      setCurrentId={setCurrentId}
-                    />
-                  ))}
-          </div>
-          <div className="buttons1">
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={scrollToTop}
-            >
-              Go To Top
-            </button>
-          </div>
-        </>
-      ) : null}
     </>
   );
 }

@@ -14,6 +14,7 @@ const Form = () => {
   const history = useHistory();
 
   const googleSuccess = async (res) => {
+    console.log(res);
     const result = res?.profileObj;
     // console.log(result);
     // google success result
