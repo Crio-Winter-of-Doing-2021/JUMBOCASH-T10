@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Entity = require("../models/Entity");
+const auth = require("../middleware/auth.js");
 
 // Of all the entites, returns an array of entites that belongs to the current user
 async function findEntities(entities, id) {
@@ -14,26 +15,24 @@ async function findEntities(entities, id) {
 }
 
 async function findfavouriteEntity(entities, userType, id) {
-      let favouriteEntity;
-      let maxTransactions = 0;
-      //console.log(userType, id);
-      for (let entity of entities)
-        try {
-            if (entity.host._id == id && entity.userType == userType) 
-            {
-                //  console.log("trans = "+entity.numberOfTransactions, maxTransactions);
-                if(entity.numberOfTransactions > maxTransactions)
-                {
-                  maxTransactions = entity.numberOfTransactions;
-                  favouriteEntity = entity;
-                  console.log("Found "+entity);
-                }
-            }
-        } catch (e) {
-          //console.log(e);
+  let favouriteEntity;
+  let maxTransactions = 0;
+  //console.log(userType, id);
+  for (let entity of entities)
+    try {
+      if (entity.host._id == id && entity.userType == userType) {
+        //  console.log("trans = "+entity.numberOfTransactions, maxTransactions);
+        if (entity.numberOfTransactions > maxTransactions) {
+          maxTransactions = entity.numberOfTransactions;
+          favouriteEntity = entity;
+          console.log("Found " + entity);
         }
-      return favouriteEntity;
+      }
+    } catch (e) {
+      //console.log(e);
     }
+  return favouriteEntity;
+}
 
 // Of all the entites, returns an array of entites that belongs to the current user
 async function getAllEntities(entities, id) {
@@ -61,7 +60,7 @@ async function getAllEntities(entities, id) {
 
 //Get all entities of current user
 
-router.get("/:id", async (req, res) => {
+router.get("/", auth, async (req, res) => {
   /*
           - Find all entities
           - If the entity host is current user, add it to the list
@@ -69,12 +68,15 @@ router.get("/:id", async (req, res) => {
            */
 
   //let entityList = [];
+  if (!req.userId) {
+    return res.status(401).json({ message: "Unauthenticated" });
+  }
 
   const entities = await Entity.find().populate("host");
 
   //console.log(entities);
 
-  findEntities(entities, req.params.id)
+  findEntities(entities, req.userId)
     .then((foundList) => {
       res.status(200).json(foundList);
     })
@@ -96,7 +98,11 @@ router.get("/:id", async (req, res) => {
     */
 
 //Post an entity for the current user
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
+  if (!req.userId) {
+    return res.status(401).json({ message: "Unauthenticated" });
+  }
+
   //Form the entity object from the request
   const entity = req.body;
 
@@ -120,7 +126,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get("/entityList/:id", async (req, res) => {
+router.get("/entityList", auth, async (req, res) => {
   /*
             - Find all entities
             - If the entity host is current user, add it to the list
@@ -128,7 +134,11 @@ router.get("/entityList/:id", async (req, res) => {
             */
 
   //let entityList = [];
-  const id = req.params.id;
+  if (!req.userId) {
+    return res.status(401).json({ message: "Unauthenticated" });
+  }
+
+  const id = req.userId;
 
   const entities = await Entity.find().populate("host");
 
@@ -144,7 +154,11 @@ router.get("/entityList/:id", async (req, res) => {
     });
 });
 
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", auth, async (req, res) => {
+  if (!req.userId) {
+    return res.status(401).json({ message: "Unauthenticated" });
+  }
+
   const entityId = req.params.id;
 
   if (entityId.match(/^[0-9a-fA-F]{24}$/)) {
@@ -187,32 +201,37 @@ router.patch("/:id", async (req, res) => {
   }
 });
 
-router.get("/favouriteVendor/:id", async (req,res)=>{
-      
-      const entities = await Entity.find().populate("host");
+router.get("/favouriteVendor", auth, async (req, res) => {
+  if (!req.userId) {
+    return res.status(401).json({ message: "Unauthenticated" });
+  }
 
-      findfavouriteEntity(entities, "Vendor", req.params.id)
-      .then((foundList) => {
-            res.status(200).json(foundList);
-      })
-      .catch((err) => {
-            //console.log(err);
-            res.status(404).json({ message: err.message });
-      });
+  const entities = await Entity.find().populate("host");
+
+  findfavouriteEntity(entities, "Vendor", req.userId)
+    .then((foundList) => {
+      res.status(200).json(foundList);
+    })
+    .catch((err) => {
+      //console.log(err);
+      res.status(404).json({ message: err.message });
+    });
 });
 
-router.get("/favouriteCustomer/:id", async (req,res)=>{
-      
-      const entities = await Entity.find().populate("host");
+router.get("/favouriteCustomer", auth, async (req, res) => {
+  if (!req.userId) {
+    return res.status(401).json({ message: "Unauthenticated" });
+  }
+  const entities = await Entity.find().populate("host");
 
-      findfavouriteEntity(entities, "Customer", req.params.id)
-      .then((foundList) => {
-            res.status(200).json(foundList);
-      })
-      .catch((err) => {
-            //console.log(err);
-            res.status(404).json({ message: err.message });
-      });
+  findfavouriteEntity(entities, "Customer", req.userId)
+    .then((foundList) => {
+      res.status(200).json(foundList);
+    })
+    .catch((err) => {
+      //console.log(err);
+      res.status(404).json({ message: err.message });
+    });
 });
 
 module.exports = router;

@@ -10,7 +10,7 @@ function Logout() {
   const history = useHistory();
 
   const logoutSuccessful = () => {
-    localStorage.removeItem("logged_in_id");
+    localStorage.clear();
     dispatch(logout());
     history.push("/");
   };

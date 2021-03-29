@@ -1,16 +1,18 @@
 import axios from "axios";
 
-// const url = "http://localhost:8000/auth/user";
+const API = axios.create({ baseURL: "http://localhost:8000" });
 
-export const login = (id) =>
-  axios.get("http://localhost:8000/auth/user", {
-    params: {
-      id,
-    },
-  });
+API.interceptors.request.use((req) => {
+  if (localStorage.token != null) {
+    req.headers.authorization = `Bearer ${localStorage.token}`;
+  }
+  return req;
+});
+
+export const login = () => API.get("/auth/user");
 
 export const post_entity = (entityObj, id) =>
-  axios.post("http://localhost:8000/entity", {
+  API.post("/entity", {
     username: entityObj.entity_name,
     userType: entityObj.entity_type,
     hostId: id,
@@ -18,11 +20,10 @@ export const post_entity = (entityObj, id) =>
     mobile: entityObj.phone_no,
   });
 
-export const get_entities = (id) =>
-  axios.get(`http://localhost:8000/entity/${id}`);
+export const get_entities = () => API.get("/entity");
 
 export const update_entity = (currentId, entityObj, id) =>
-  axios.patch(`http://localhost:8000/entity/${currentId}`, {
+  API.patch(`/entity/${currentId}`, {
     username: entityObj.entity_name,
     userType: entityObj.entity_type,
     hostId: id,
@@ -30,13 +31,16 @@ export const update_entity = (currentId, entityObj, id) =>
     mobile: entityObj.phone_no,
   });
 
-export const get_entityList = (id) =>
-  fetch(`http://localhost:8000/entity/entityList/${id}`).then((data) =>
-    data.json()
-  );
+export const get_entityList = () =>
+  fetch(`http://localhost:8000/entity/entityList/`, {
+    method: "GET",
+    headers: {
+      authorization: `Bearer ${localStorage.token}`,
+    },
+  }).then((data) => data.json());
 
 export const post_transaction = (transactionObj, id) =>
-  axios.post(`http://localhost:8000/transaction`, {
+  API.post(`/transaction`, {
     transactionType: transactionObj.transaction_type,
     entityId: transactionObj.entity_id,
     amount: transactionObj.amount,
@@ -45,11 +49,10 @@ export const post_transaction = (transactionObj, id) =>
     remarks: transactionObj.transaction_remark,
   });
 
-export const get_transactions = (id) =>
-  axios.get(`http://localhost:8000/transaction/${id}`);
+export const get_transactions = () => API.get(`/transaction`);
 
 export const update_transaction = (currentId, transactionObj, id) =>
-  axios.patch(`http://localhost:8000/transaction/${currentId}`, {
+  API.patch(`/transaction/${currentId}`, {
     transactionType: transactionObj.transaction_type,
     entityId: transactionObj.entity_id,
     amount: transactionObj.amount,
@@ -58,7 +61,10 @@ export const update_transaction = (currentId, transactionObj, id) =>
     remarks: transactionObj.transaction_remark,
   });
 
-export const get_balance = (id) =>
-  fetch(`http://localhost:8000/transaction/balance/${id}`).then((data) =>
-    data.json()
-  );
+export const get_balance = () =>
+  fetch(`http://localhost:8000/transaction/balance/`, {
+    method: "GET",
+    headers: {
+      authorization: `Bearer ${localStorage.token}`,
+    },
+  }).then((data) => data.json());
