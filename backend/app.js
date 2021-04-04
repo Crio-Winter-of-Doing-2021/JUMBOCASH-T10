@@ -48,9 +48,9 @@ app.use("/profile", profileRoutes);
 app.use("/transaction", transactionRoutes);
 app.use("/entity", entityRoutes);
 
-// app.get("/user", (req,res)=>{
-//       res.render("home");
-// });
+app.get("/", (req, res) => {
+  res.send("Welcome to the Backend");
+});
 
 app.listen(process.env.PORT || 8000, () => {
   console.log(`Server started on port ${PORT}`);
