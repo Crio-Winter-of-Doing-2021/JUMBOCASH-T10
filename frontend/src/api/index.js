@@ -68,3 +68,19 @@ export const get_balance = () =>
       authorization: `Bearer ${localStorage.token}`,
     },
   }).then((data) => data.json());
+
+export const favourite_vendor = () =>
+  fetch(`http://localhost:8000/entity/favouriteVendor`, {
+    method: "GET",
+    headers: {
+      authorization: `Bearer ${localStorage.token}`,
+    },
+  }).then((data) => data.json());
+
+export const favourite_customer = () =>
+  fetch(`http://localhost:8000/entity/favouriteCustomer`, {
+    method: "GET",
+    headers: {
+      authorization: `Bearer ${localStorage.token}`,
+    },
+  }).then((data) => data.json());

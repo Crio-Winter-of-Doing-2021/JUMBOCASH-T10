@@ -23,10 +23,10 @@ function Balance() {
         style={{
           backgroundColor: "grey",
           color: "white",
-          height: "10vh",
+          padding: "1em",
           display: "flex",
+          flexDirection: "column",
           justifyContent: "space-evenly",
-          alignItems: "center",
         }}
       >
         <Typography variant="h4">

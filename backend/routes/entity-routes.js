@@ -25,7 +25,6 @@ async function findfavouriteEntity(entities, userType, id) {
         if (entity.numberOfTransactions > maxTransactions) {
           maxTransactions = entity.numberOfTransactions;
           favouriteEntity = entity;
-          console.log("Found " + entity);
         }
       }
     } catch (e) {

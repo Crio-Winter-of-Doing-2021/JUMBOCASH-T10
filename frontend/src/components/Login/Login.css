@@ -12,16 +12,18 @@
   background-attachment: fixed;
   background-size: cover;
   width: 50%;
-  height: 50vh;
+  /* height: 50vh; */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   border-radius: 5px;
+  padding: 2em;
 }
 
 .sign-in-template button {
   width: 60%;
+  height: fit-content;
   margin: 5px;
   white-space: normal;
   word-wrap: break-word;
@@ -34,4 +36,10 @@
 
 .button-items span {
   padding: 0px 5px;
+}
+
+@media (max-width: 550px) {
+  .sign-in-template {
+    width: 100%;
+  }
 }

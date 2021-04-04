@@ -144,7 +144,13 @@ function TransactionForm({ entityList, currentId, setCurrentId }) {
         <button
           type="button"
           className={show ? "btn btn-danger" : "btn btn-primary"}
-          style={{ marginBottom: "1em" }}
+          style={{
+            marginBottom: "1em",
+            height: "fit-content",
+            whiteSpace: "normal",
+            wordWrap: "break-word",
+            textAlign: "center",
+          }}
           onClick={handleShow}
         >
           {show ? "Close" : "Create Transaction"}
