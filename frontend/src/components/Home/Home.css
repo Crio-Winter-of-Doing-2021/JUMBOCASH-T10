@@ -22,3 +22,9 @@
   padding: 5em;
   text-align: center;
 }
+
+@media (max-width: 550px) {
+  .home-template {
+    width: 100%;
+  }
+}
