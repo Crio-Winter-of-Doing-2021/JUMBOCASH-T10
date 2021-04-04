@@ -1,0 +1,20 @@
+{
+  "name": "jumbocash-t10",
+  "version": "1.0.0",
+  "description": "Team ID: JUMBOCASH-T10 | Team Members: Shaswata Raha &amp; Rahul Lekkala",
+  "main": "./backend/app.js",
+  "scripts": {
+    "start": "nodemon ./backend/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Crio-Winter-of-Doing-2021/JUMBOCASH-T10.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Crio-Winter-of-Doing-2021/JUMBOCASH-T10/issues"
+  },
+  "homepage": "https://github.com/Crio-Winter-of-Doing-2021/JUMBOCASH-T10#readme"
+}

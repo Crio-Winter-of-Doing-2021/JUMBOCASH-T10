@@ -40,7 +40,7 @@ mongoose.connect(
   }
 );
 
-const PORT=process.env.PORT||8000;
+const PORT = process.env.PORT || 8000;
 
 //setup routes
 app.use("/auth", authRoutes);
@@ -52,7 +52,6 @@ app.use("/entity", entityRoutes);
 //       res.render("home");
 // });
 
-app.listen(PORT, () => {
+app.listen(process.env.PORT || 8000, () => {
   console.log(`Server started on port ${PORT}`);
 });
-
