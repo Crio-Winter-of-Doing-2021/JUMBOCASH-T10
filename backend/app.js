@@ -33,7 +33,7 @@ app.use(passport.session());
 
 //Connect to mongodb
 mongoose.connect(
-  "mongodb+srv://shaswata1029:sssbn1029@cluster0.1wybo.mongodb.net/jumboCashDb?retryWrites=true&w=majority",
+  process.env.MONGOLOCAL,
   { useNewUrlParser: true, useUnifiedTopology: true },
   () => {
     console.log("Connected to MongoDB");
