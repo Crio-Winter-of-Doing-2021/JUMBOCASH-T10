@@ -52,6 +52,6 @@ app.get("/", (req, res) => {
   res.send("Welcome to the Backend");
 });
 
-app.listen(process.env.PORT || 8000, () => {
+app.listen(PORT || 8000, () => {
   console.log(`Server started on port ${PORT}`);
 });
