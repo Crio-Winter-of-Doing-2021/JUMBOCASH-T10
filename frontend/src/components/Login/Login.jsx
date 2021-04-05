@@ -20,11 +20,14 @@ const Form = () => {
     // google success result
 
     try {
-      const user = await axios.post("http://localhost:8000/auth/login", {
-        email: result.email,
-        username: result.name,
-        imageUrl: result.imageUrl,
-      });
+      const user = await axios.post(
+        "https://jumbocash-backend.herokuapp.com/auth/login",
+        {
+          email: result.email,
+          username: result.name,
+          imageUrl: result.imageUrl,
+        }
+      );
 
       console.log(user.data.token);
       localStorage.setItem("token", user.data.token);
@@ -51,11 +54,14 @@ const Form = () => {
     // console.log(res?.picture.data.url);
 
     try {
-      const user = await axios.post("http://localhost:8000/auth/login", {
-        email: res.email,
-        username: res.name,
-        imageUrl: res?.picture.data.url,
-      });
+      const user = await axios.post(
+        "https://jumbocash-backend.herokuapp.com/auth/login",
+        {
+          email: res.email,
+          username: res.name,
+          imageUrl: res?.picture.data.url,
+        }
+      );
 
       console.log(user.data.token);
       localStorage.setItem("token", user.data.token);
