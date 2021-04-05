@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://localhost:8000" });
+const API = axios.create({
+  baseURL: "https://jumbocash-backend.herokuapp.com/",
+});
 
 API.interceptors.request.use((req) => {
   if (localStorage.token != null) {
@@ -32,7 +34,7 @@ export const update_entity = (currentId, entityObj, id) =>
   });
 
 export const get_entityList = () =>
-  fetch(`http://localhost:8000/entity/entityList/`, {
+  fetch(`https://jumbocash-backend.herokuapp.com/entity/entityList/`, {
     method: "GET",
     headers: {
       authorization: `Bearer ${localStorage.token}`,
@@ -62,7 +64,7 @@ export const update_transaction = (currentId, transactionObj, id) =>
   });
 
 export const get_balance = () =>
-  fetch(`http://localhost:8000/transaction/balance/`, {
+  fetch(`https://jumbocash-backend.herokuapp.com/transaction/balance/`, {
     method: "GET",
     headers: {
       authorization: `Bearer ${localStorage.token}`,
@@ -70,7 +72,7 @@ export const get_balance = () =>
   }).then((data) => data.json());
 
 export const favourite_vendor = () =>
-  fetch(`http://localhost:8000/entity/favouriteVendor`, {
+  fetch(`https://jumbocash-backend.herokuapp.com/entity/favouriteVendor`, {
     method: "GET",
     headers: {
       authorization: `Bearer ${localStorage.token}`,
@@ -78,7 +80,7 @@ export const favourite_vendor = () =>
   }).then((data) => data.json());
 
 export const favourite_customer = () =>
-  fetch(`http://localhost:8000/entity/favouriteCustomer`, {
+  fetch(`https://jumbocash-backend.herokuapp.com/entity/favouriteCustomer`, {
     method: "GET",
     headers: {
       authorization: `Bearer ${localStorage.token}`,
