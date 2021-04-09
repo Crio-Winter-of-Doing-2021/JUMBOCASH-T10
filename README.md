@@ -4,7 +4,7 @@ Team ID: JUMBOCASH-T10 | Team Members: Shaswata Raha &amp; Rahul Lekkala
 
 ## X-Meme
 
-Frontend and Backend code are in separate files named as "frontend" and "backend" respectively.
+Frontend and Backend code are in separate folders named as "frontend" and "backend" respectively.
 
 ## TECH-STACK USED
 
@@ -44,7 +44,7 @@ For deploying the frontend move to the frontend folder and download the netlify 
 ```bash
 npm install netlify-cli -g
 netlify login
-netlify build
+npm run build
 netlify deploy
 netlify deploy --prod
 ```
